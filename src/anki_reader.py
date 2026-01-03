@@ -2,10 +2,10 @@
 Anki Database Reader - Read-only access to Anki SQLite database
 """
 import sqlite3
-import os
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
+from urllib.parse import quote
 
 
 def get_default_anki_db_path():
@@ -38,8 +38,9 @@ class AnkiReader:
         self.conn = None
 
     def __enter__(self):
-        # Open in read-only mode using URI
-        uri = f"file:{self.db_path}?mode=ro"
+        # Open in read-only mode using URI (URL-encode path for spaces)
+        encoded_path = quote(self.db_path, safe='/:')
+        uri = f"file:{encoded_path}?mode=ro"
         self.conn = sqlite3.connect(uri, uri=True)
         self.conn.row_factory = sqlite3.Row
         return self
@@ -117,22 +118,29 @@ class AnkiReader:
     def get_decks(self):
         """Get all decks with their card counts"""
         cursor = self.conn.cursor()
-
-        # Get decks from col table (stored as JSON)
-        cursor.execute("SELECT decks FROM col")
-        row = cursor.fetchone()
-
-        if not row:
-            return {}
-
-        decks_json = json.loads(row['decks'])
         decks = {}
 
-        for deck_id, deck_info in decks_json.items():
-            decks[deck_id] = {
-                'name': deck_info['name'],
-                'id': deck_id
-            }
+        # Try new Anki schema (separate decks table)
+        try:
+            cursor.execute("SELECT id, name FROM decks")
+            for row in cursor.fetchall():
+                # Deck names use \x1f as hierarchy separator
+                name = row['name'].replace('\x1f', '::')
+                decks[str(row['id'])] = {
+                    'name': name,
+                    'id': str(row['id'])
+                }
+        except sqlite3.OperationalError:
+            # Fall back to old schema (decks in col table as JSON)
+            cursor.execute("SELECT decks FROM col")
+            row = cursor.fetchone()
+            if row and row['decks']:
+                decks_json = json.loads(row['decks'])
+                for deck_id, deck_info in decks_json.items():
+                    decks[deck_id] = {
+                        'name': deck_info['name'],
+                        'id': deck_id
+                    }
 
         # Get card counts per deck
         cursor.execute("""

@@ -1,9 +1,11 @@
 <svg width="782" height="148" viewBox="0 0 782 148" xmlns="http://www.w3.org/2000/svg">
 <rect width="782" height="148" fill="#0d1117"/>
 <g transform="translate(30, 20)">
-<text x="-10" y="9" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Mon</text>
-<text x="-10" y="37" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Wed</text>
-<text x="-10" y="65" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Fri</text>
+<text x="-10" y="9" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Sun</text>
+<text x="-10" y="23" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Mon</text>
+<text x="-10" y="51" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Wed</text>
+<text x="-10" y="79" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Fri</text>
+<text x="-10" y="93" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif" text-anchor="end">Sat</text>
 <rect x="0" y="0" width="11" height="11" fill="#161b22" rx="2" ry="2"><title>0 reviews on 2024-12-29</title></rect>
 <rect x="0" y="14" width="11" height="11" fill="#161b22" rx="2" ry="2"><title>0 reviews on 2024-12-30</title></rect>
 <rect x="0" y="28" width="11" height="11" fill="#161b22" rx="2" ry="2"><title>0 reviews on 2024-12-31</title></rect>
@@ -376,19 +378,18 @@
 <rect x="728" y="70" width="11" height="11" fill="#161b22" rx="2" ry="2"><title>0 reviews on 2026-01-02</title></rect>
 <rect x="728" y="84" width="11" height="11" fill="#161b22" rx="2" ry="2"><title>0 reviews on 2026-01-03</title></rect>
 <text x="0" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Dec</text>
-<text x="0" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Jan</text>
-<text x="56" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Feb</text>
-<text x="112" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Mar</text>
-<text x="182" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Apr</text>
-<text x="238" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">May</text>
+<text x="14" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Jan</text>
+<text x="70" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Feb</text>
+<text x="126" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Mar</text>
+<text x="196" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Apr</text>
+<text x="252" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">May</text>
 <text x="308" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Jun</text>
-<text x="364" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Jul</text>
-<text x="420" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Aug</text>
-<text x="490" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Sep</text>
-<text x="546" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Oct</text>
-<text x="602" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Nov</text>
-<text x="672" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Dec</text>
-<text x="728" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Jan</text>
+<text x="378" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Jul</text>
+<text x="434" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Aug</text>
+<text x="504" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Sep</text>
+<text x="560" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Oct</text>
+<text x="616" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Nov</text>
+<text x="686" y="-5" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Dec</text>
 </g>
 <text x="632" y="141" fill="#8b949e" font-size="9" font-family="system-ui, -apple-system, sans-serif">Less</text>
 <rect x="662" y="133" width="11" height="11" fill="#161b22" rx="2" ry="2"/>

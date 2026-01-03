@@ -35,7 +35,8 @@ class HeatmapGenerator:
     MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-    DAY_LABELS = ['Mon', '', 'Wed', '', 'Fri', '', '']
+    # GitHub style: Sunday at top
+    DAY_LABELS = ['Sun', 'Mon', '', 'Wed', '', 'Fri', 'Sat']
 
     def __init__(self, output_dir="output"):
         self.output_dir = Path(output_dir)
@@ -106,34 +107,37 @@ class HeatmapGenerator:
         current_month = -1
         month_positions = []
 
-        # Draw cells
+        # Draw cells - iterate by week and place each day in correct row
         current_date = start_date
-        for week in range(self.WEEKS):
-            for day in range(self.DAYS):
-                if current_date > today:
-                    break
+        week = 0
+        while current_date <= today and week < self.WEEKS:
+            # Convert Python weekday (Mon=0) to GitHub style (Sun=0)
+            github_weekday = (current_date.weekday() + 1) % 7
 
-                # Track month changes
-                if current_date.month != current_month:
-                    current_month = current_date.month
-                    month_positions.append((week, self.MONTH_LABELS[current_month - 1]))
+            # Track month changes (only on first day of week)
+            if github_weekday == 0 and current_date.month != current_month:
+                current_month = current_date.month
+                month_positions.append((week, self.MONTH_LABELS[current_month - 1]))
 
-                date_str = current_date.strftime('%Y-%m-%d')
-                count = data_by_date.get(date_str, 0)
-                level = self.get_color_level(count, max_count)
-                color = colors[level]
+            date_str = current_date.strftime('%Y-%m-%d')
+            count = data_by_date.get(date_str, 0)
+            level = self.get_color_level(count, max_count)
+            color = colors[level]
 
-                x = week * (self.CELL_SIZE + self.CELL_MARGIN)
-                y = day * (self.CELL_SIZE + self.CELL_MARGIN)
+            x = week * (self.CELL_SIZE + self.CELL_MARGIN)
+            y = github_weekday * (self.CELL_SIZE + self.CELL_MARGIN)
 
-                tooltip = f"{count} reviews on {date_str}"
-                svg_parts.append(
-                    f'<rect x="{x}" y="{y}" width="{self.CELL_SIZE}" '
-                    f'height="{self.CELL_SIZE}" fill="{color}" rx="2" ry="2">'
-                    f'<title>{tooltip}</title></rect>'
-                )
+            tooltip = f"{count} reviews on {date_str}"
+            svg_parts.append(
+                f'<rect x="{x}" y="{y}" width="{self.CELL_SIZE}" '
+                f'height="{self.CELL_SIZE}" fill="{color}" rx="2" ry="2">'
+                f'<title>{tooltip}</title></rect>'
+            )
 
-                current_date += timedelta(days=1)
+            # Move to next day, and next week column if we hit Sunday
+            current_date += timedelta(days=1)
+            if github_weekday == 6:  # Saturday -> next week
+                week += 1
 
         # Add month labels
         for week, month_name in month_positions:

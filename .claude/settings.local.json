@@ -4,7 +4,10 @@
       "Bash(chmod:*)",
       "Bash(python3:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo create:*)",
+      "Bash(./run_sync.sh:*)"
     ]
   }
 }

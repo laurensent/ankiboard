@@ -2,7 +2,6 @@
 Data Exporter - Export Anki statistics to JSON files
 """
 import json
-import os
 from datetime import datetime
 from pathlib import Path
 from stats_calculator import StatsCalculator

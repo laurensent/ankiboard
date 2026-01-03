@@ -111,9 +111,8 @@ class ReadmeGenerator:
         stats = self.load_stats()
         cards = stats['cards']
 
-        # Calculate mastery percentage
+        # Calculate active cards (excluding suspended)
         total_active = cards['total'] - cards['suspended']
-        mastery_pct = (cards['mature'] / total_active * 100) if total_active > 0 else 0
 
         readme = f"""# Anki Statistics
 
