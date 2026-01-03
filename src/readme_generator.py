@@ -58,42 +58,6 @@ class ReadmeGenerator:
 
         return " ".join(badges)
 
-    def generate_decks_table(self, stats, max_decks=10):
-        """Generate table of top decks in collapsible section"""
-        decks = stats.get('decks', {})
-
-        sorted_decks = sorted(
-            decks.values(),
-            key=lambda d: d.get('total', 0),
-            reverse=True
-        )[:max_decks]
-
-        if not sorted_decks:
-            return ""
-
-        lines = [
-            "",
-            "<details>",
-            "<summary><strong>Top Decks</strong></summary>",
-            "",
-            "| Deck | Total | Mature | New |",
-            "|------|-------|--------|-----|"
-        ]
-
-        for deck in sorted_decks:
-            name = deck['name']
-            if len(name) > 40:
-                name = name[:37] + "..."
-            lines.append(
-                f"| {name} | {deck.get('total', 0):,} | "
-                f"{deck.get('mature', 0):,} | {deck.get('new', 0):,} |"
-            )
-
-        lines.append("")
-        lines.append("</details>")
-
-        return '\n'.join(lines)
-
     def generate_readme(self):
         """Generate full README.md content"""
         stats = self.load_stats()
@@ -110,19 +74,13 @@ class ReadmeGenerator:
   <img alt="Review Heatmap" src="output/heatmap.svg">
 </picture>
 
-## Statistics
+## Top Decks
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="output/stats-card-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="output/stats-card.svg">
-  <img alt="Statistics" src="output/stats-card.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="output/decks-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="output/decks.svg">
+  <img alt="Top Decks" src="output/decks.svg">
 </picture>
-
-## Progress
-
-<img src="output/progress-bar.svg" alt="Progress" width="300">
-
-{self.generate_decks_table(stats)}
 """
 
         return readme

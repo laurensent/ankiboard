@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from data_exporter import DataExporter
 from heatmap_generator import HeatmapGenerator
-from stats_svg_generator import StatsSvgGenerator
+from deck_svg_generator import DeckSvgGenerator
 from readme_generator import ReadmeGenerator
 
 
@@ -50,7 +50,7 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
     print("=" * 40)
 
     # Step 1: Export data from Anki
-    print("\n[1/4] Exporting Anki statistics...")
+    print("\n[1/5] Exporting statistics...")
     try:
         exporter = DataExporter(data_dir)
         stats = exporter.export_all(db_path)
@@ -75,11 +75,11 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
     light_file, dark_file = generator.generate_from_data(stats['heatmap_data'])
     print(f"  - Generated: {light_file.name}, {dark_file.name}")
 
-    # Step 3: Generate stats SVGs
-    print("\n[3/5] Generating stats visualizations...")
-    stats_gen = StatsSvgGenerator(output_dir)
-    svg_files = stats_gen.generate_all(stats)
-    print(f"  - Generated: {', '.join(f.name for f in svg_files.values())}")
+    # Step 3: Generate deck progress SVG
+    print("\n[3/5] Generating deck visualization...")
+    deck_gen = DeckSvgGenerator(output_dir)
+    deck_light, deck_dark = deck_gen.generate_all(stats['decks'])
+    print(f"  - Generated: {deck_light.name}, {deck_dark.name}")
 
     # Step 4: Generate README
     print("\n[4/5] Generating README...")
@@ -104,10 +104,8 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
             "data/heatmap.json",
             "output/heatmap.svg",
             "output/heatmap-dark.svg",
-            "output/stats-card.svg",
-            "output/stats-card-dark.svg",
-            "output/progress-bar.svg",
-            "output/progress-ring.svg",
+            "output/decks.svg",
+            "output/decks-dark.svg",
             "README.md"
         ]
 

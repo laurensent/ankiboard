@@ -9,7 +9,8 @@
       "Bash(gh repo create:*)",
       "Bash(./run_sync.sh:*)",
       "Bash(git push)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(open:*)"
     ]
   }
 }
