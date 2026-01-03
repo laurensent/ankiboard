@@ -9,7 +9,6 @@
     <array>
         <string>/usr/bin/python3</string>
         <string>/Users/lori/Workspace/VSCodeProjects/anki-stats-sync/src/sync.py</string>
-        <string>--push</string>
     </array>
 
     <key>StartCalendarInterval</key>
