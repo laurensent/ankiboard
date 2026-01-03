@@ -7,9 +7,9 @@
 </defs>
 <rect width="300" height="380" fill="#ffffff"/>
 <text x="0" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#24292f">00 CodeTop</text>
-<text x="300" y="14" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#656d76">2/1,140</text>
+<text x="300" y="14" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#656d76">10/1,140</text>
 <rect x="0" y="24" width="300" height="6" fill="#eaeef2" rx="3"/>
-<rect x="0" y="24" width="0.5263157894736842" height="6" fill="url(#barGrad)" rx="3"/>
+<rect x="0" y="24" width="2.631578947368421" height="6" fill="url(#barGrad)" rx="3"/>
 <text x="0" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#24292f">00 QA</text>
 <text x="300" y="52" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#656d76">0/175</text>
 <rect x="0" y="62" width="300" height="6" fill="#eaeef2" rx="3"/>
