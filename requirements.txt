@@ -1,0 +1,2 @@
+# Anki Stats Sync Dependencies
+# No external dependencies required - uses Python standard library only
