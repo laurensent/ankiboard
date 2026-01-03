@@ -35,8 +35,8 @@ class HeatmapGenerator:
     MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-    # GitHub style: Sunday at top
-    DAY_LABELS = ['Sun', 'Mon', '', 'Wed', '', 'Fri', 'Sat']
+    # GitHub style: only Mon, Wed, Fri labels
+    DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', '']
 
     def __init__(self, output_dir="output"):
         self.output_dir = Path(output_dir)
@@ -139,14 +139,17 @@ class HeatmapGenerator:
             if github_weekday == 6:  # Saturday -> next week
                 week += 1
 
-        # Add month labels
+        # Add month labels (filter out overlapping ones)
+        last_label_week = -4  # Minimum 4 weeks between labels
         for week, month_name in month_positions:
-            x = week * (self.CELL_SIZE + self.CELL_MARGIN)
-            svg_parts.append(
-                f'<text x="{x}" y="-5" fill="{text_color}" '
-                f'font-size="9" font-family="system-ui, -apple-system, sans-serif">'
-                f'{month_name}</text>'
-            )
+            if week - last_label_week >= 4:
+                x = week * (self.CELL_SIZE + self.CELL_MARGIN)
+                svg_parts.append(
+                    f'<text x="{x}" y="-5" fill="{text_color}" '
+                    f'font-size="9" font-family="system-ui, -apple-system, sans-serif">'
+                    f'{month_name}</text>'
+                )
+                last_label_week = week
 
         svg_parts.append('</g>')
 
