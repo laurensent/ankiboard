@@ -84,7 +84,8 @@ class HeatmapGenerator:
         start_date = end_of_week - timedelta(weeks=52, days=6)
 
         bg_color = '#0d1117' if dark_mode else '#ffffff'
-        text_color = '#8b949e' if dark_mode else '#57606a'
+        # GitHub uses lighter text in dark mode
+        text_color = '#e6edf3' if dark_mode else '#1f2328'
 
         svg_parts = [
             f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" '
@@ -99,7 +100,7 @@ class HeatmapGenerator:
                 y = i * (self.CELL_SIZE + self.CELL_MARGIN) + self.CELL_SIZE - 2
                 svg_parts.append(
                     f'<text x="-10" y="{y}" fill="{text_color}" '
-                    f'font-size="9" font-family="system-ui, -apple-system, sans-serif" '
+                    f'font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
                     f'text-anchor="end">{label}</text>'
                 )
 
@@ -146,7 +147,7 @@ class HeatmapGenerator:
                 x = week * (self.CELL_SIZE + self.CELL_MARGIN)
                 svg_parts.append(
                     f'<text x="{x}" y="-5" fill="{text_color}" '
-                    f'font-size="9" font-family="system-ui, -apple-system, sans-serif">'
+                    f'font-size="12" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                     f'{month_name}</text>'
                 )
                 last_label_week = week
@@ -158,7 +159,7 @@ class HeatmapGenerator:
         legend_x = width - 120
         svg_parts.append(
             f'<text x="{legend_x - 30}" y="{legend_y + 8}" fill="{text_color}" '
-            f'font-size="9" font-family="system-ui, -apple-system, sans-serif">Less</text>'
+            f'font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">Less</text>'
         )
 
         for i in range(5):
@@ -170,7 +171,7 @@ class HeatmapGenerator:
 
         svg_parts.append(
             f'<text x="{legend_x + 75}" y="{legend_y + 8}" fill="{text_color}" '
-            f'font-size="9" font-family="system-ui, -apple-system, sans-serif">More</text>'
+            f'font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">More</text>'
         )
 
         svg_parts.append('</svg>')
