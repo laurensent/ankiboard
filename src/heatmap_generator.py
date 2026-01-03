@@ -99,7 +99,7 @@ class HeatmapGenerator:
             if label:
                 y = i * (self.CELL_SIZE + self.CELL_MARGIN) + self.CELL_SIZE - 2
                 svg_parts.append(
-                    f'<text x="-38" y="{y}" fill="{text_color}" '
+                    f'<text x="-30" y="{y}" fill="{text_color}" '
                     f'font-size="11" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                     f'{label}</text>'
                 )
