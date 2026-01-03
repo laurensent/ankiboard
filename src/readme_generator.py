@@ -8,10 +8,11 @@ from pathlib import Path
 class ReadmeGenerator:
     """Generate README.md with statistics and heatmap"""
 
-    def __init__(self, data_dir="data", output_dir="output", repo_root="."):
+    def __init__(self, data_dir="data", output_dir="output", repo_root=".", repo_url=None):
         self.data_dir = Path(data_dir)
         self.output_dir = Path(output_dir)
         self.repo_root = Path(repo_root)
+        self.repo_url = repo_url
 
     def load_stats(self):
         """Load stats from JSON file"""
@@ -30,10 +31,12 @@ class ReadmeGenerator:
         badges = []
 
         # Last sync badge (shields.io uses -- for hyphen)
+        # Links to GitHub Actions page if repo_url is set
         date_encoded = date.replace("-", "--")
-        badges.append(
-            f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-blue)"
-        )
+        sync_badge = f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-blue)"
+        if self.repo_url:
+            sync_badge = f"[{sync_badge}]({self.repo_url}/actions)"
+        badges.append(sync_badge)
 
         # Total cards
         total_str = f"{cards['total']:,}".replace(",", "_")
@@ -101,7 +104,12 @@ class ReadmeGenerator:
 
 
 if __name__ == "__main__":
-    generator = ReadmeGenerator()
+    import argparse
+    parser = argparse.ArgumentParser(description='Generate README with Anki statistics')
+    parser.add_argument('--repo-url', help='GitHub repository URL for badge links')
+    args = parser.parse_args()
+
+    generator = ReadmeGenerator(repo_url=args.repo_url)
     try:
         readme_path = generator.write_readme()
         print(f"Generated: {readme_path}")

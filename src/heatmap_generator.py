@@ -64,7 +64,7 @@ class HeatmapGenerator:
         colors = self.COLORS_DARK if dark_mode else self.COLORS
 
         # Calculate dimensions
-        left_margin = 30
+        left_margin = 40
         top_margin = 20
         width = left_margin + self.WEEKS * (self.CELL_SIZE + self.CELL_MARGIN) + 10
         height = top_margin + self.DAYS * (self.CELL_SIZE + self.CELL_MARGIN) + 30
@@ -94,14 +94,14 @@ class HeatmapGenerator:
             f'<g transform="translate({left_margin}, {top_margin})">',
         ]
 
-        # Add day labels
+        # Add day labels (left-aligned, like GitHub)
         for i, label in enumerate(self.DAY_LABELS):
             if label:
                 y = i * (self.CELL_SIZE + self.CELL_MARGIN) + self.CELL_SIZE - 2
                 svg_parts.append(
-                    f'<text x="-10" y="{y}" fill="{text_color}" '
-                    f'font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
-                    f'text-anchor="end">{label}</text>'
+                    f'<text x="-38" y="{y}" fill="{text_color}" '
+                    f'font-size="11" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
+                    f'{label}</text>'
                 )
 
         # Track months for labels
@@ -147,7 +147,7 @@ class HeatmapGenerator:
                 x = week * (self.CELL_SIZE + self.CELL_MARGIN)
                 svg_parts.append(
                     f'<text x="{x}" y="-5" fill="{text_color}" '
-                    f'font-size="12" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
+                    f'font-size="13" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                     f'{month_name}</text>'
                 )
                 last_label_week = week
@@ -159,7 +159,7 @@ class HeatmapGenerator:
         legend_x = width - 120
         svg_parts.append(
             f'<text x="{legend_x - 30}" y="{legend_y + 8}" fill="{text_color}" '
-            f'font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">Less</text>'
+            f'font-size="11" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">Less</text>'
         )
 
         for i in range(5):
@@ -171,7 +171,7 @@ class HeatmapGenerator:
 
         svg_parts.append(
             f'<text x="{legend_x + 75}" y="{legend_y + 8}" fill="{text_color}" '
-            f'font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">More</text>'
+            f'font-size="11" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">More</text>'
         )
 
         svg_parts.append('</svg>')

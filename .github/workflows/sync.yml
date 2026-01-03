@@ -32,7 +32,8 @@ jobs:
         run: |
           cd src
           python heatmap_generator.py
-          python readme_generator.py
+          python deck_svg_generator.py
+          python readme_generator.py --repo-url "${{ github.server_url }}/${{ github.repository }}"
 
       - name: Check for changes
         id: changes

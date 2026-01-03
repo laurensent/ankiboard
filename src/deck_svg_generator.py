@@ -88,9 +88,9 @@ class DeckSvgGenerator:
                 f'fill="{bar_bg}" rx="3"/>'
             )
 
-            # Progress bar (relative to max total)
-            if max_total > 0:
-                bar_w = (total / max_total) * bar_width
+            # Progress bar (mastery progress: mature/total)
+            if total > 0:
+                bar_w = (mature / total) * bar_width
                 if bar_w > 0:
                     svg_parts.append(
                         f'<rect x="0" y="{bar_y}" width="{bar_w}" height="{bar_height}" '
@@ -115,3 +115,23 @@ class DeckSvgGenerator:
             f.write(dark_svg)
 
         return light_file, dark_file
+
+
+if __name__ == "__main__":
+    import json
+    from pathlib import Path
+
+    data_dir = Path(__file__).parent.parent / "data"
+    stats_file = data_dir / "stats.json"
+
+    if not stats_file.exists():
+        print(f"Error: {stats_file} not found")
+        print("Run data_exporter.py first to generate stats data")
+        exit(1)
+
+    with open(stats_file, 'r', encoding='utf-8') as f:
+        stats = json.load(f)
+
+    generator = DeckSvgGenerator()
+    light_file, dark_file = generator.generate_all(stats['decks'])
+    print(f"Generated: {light_file.name}, {dark_file.name}")

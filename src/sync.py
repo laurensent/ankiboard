@@ -37,7 +37,7 @@ def run_git_command(args, cwd=None):
         return False, "", "Git not found"
 
 
-def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
+def sync_stats(db_path=None, commit=True, push=False, repo_root=None, repo_url=None):
     """Main sync function"""
     if repo_root is None:
         repo_root = Path(__file__).parent.parent
@@ -83,7 +83,7 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
 
     # Step 4: Generate README
     print("\n[4/5] Generating README...")
-    readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root)
+    readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root, repo_url=repo_url)
     readme_path = readme_gen.write_readme()
     print(f"  - Generated: {readme_path.name}")
 
@@ -171,6 +171,11 @@ def main():
         help='Repository root directory',
         default=None
     )
+    parser.add_argument(
+        '--repo-url',
+        help='GitHub repository URL (e.g., https://github.com/user/repo)',
+        default=None
+    )
 
     args = parser.parse_args()
 
@@ -178,7 +183,8 @@ def main():
         db_path=args.db,
         commit=not args.no_commit,
         push=args.push,
-        repo_root=args.repo
+        repo_root=args.repo,
+        repo_url=args.repo_url
     )
 
     sys.exit(0 if success else 1)
