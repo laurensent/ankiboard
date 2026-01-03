@@ -5,49 +5,22 @@
 ### Manual Sync
 
 ```bash
-# Run sync (export + commit)
+# Run sync (export + commit + push)
 ./run_sync.sh
 
-# Export only, no commit
+# Export only, no commit/push
 ./run_sync.sh --no-commit
 
-# Export, commit and push
-./run_sync.sh --push
+# Commit but don't push
+./run_sync.sh --no-push
 ```
 
-### Automated Sync (macOS)
+### Automation
 
-To automatically sync daily at 23:00:
-
-1. Copy the LaunchAgent plist:
-   ```bash
-   cp setup/com.anki.stats-sync.plist ~/Library/LaunchAgents/
-   ```
-
-2. Update paths in the plist if needed:
-   ```bash
-   # Edit the file to match your paths
-   nano ~/Library/LaunchAgents/com.anki.stats-sync.plist
-   ```
-
-3. Load the LaunchAgent:
-   ```bash
-   launchctl load ~/Library/LaunchAgents/com.anki.stats-sync.plist
-   ```
-
-4. To unload:
-   ```bash
-   launchctl unload ~/Library/LaunchAgents/com.anki.stats-sync.plist
-   ```
-
-### View Logs
+Use your preferred automation tool (cron, Keyboard Maestro, etc.) to call:
 
 ```bash
-# View stdout log
-cat /tmp/anki-stats-sync.log
-
-# View stderr log
-cat /tmp/anki-stats-sync.err
+/path/to/anki-stats-sync/run_sync.sh
 ```
 
 ## GitHub Repository Setup
@@ -71,21 +44,24 @@ cat /tmp/anki-stats-sync.err
 ```
 anki-stats-sync/
 ├── data/
-│   ├── stats.json      # Current statistics
-│   ├── history.json    # Historical data
-│   └── heatmap.json    # Heatmap data
+│   ├── stats.json        # Current statistics
+│   ├── history.json      # Historical data
+│   └── heatmap.json      # Heatmap data
 ├── output/
-│   ├── heatmap.svg     # Light theme heatmap
-│   └── heatmap-dark.svg # Dark theme heatmap
+│   ├── heatmap.svg       # Light theme heatmap
+│   ├── heatmap-dark.svg  # Dark theme heatmap
+│   ├── decks.svg         # Light theme deck progress
+│   └── decks-dark.svg    # Dark theme deck progress
 ├── src/
-│   ├── anki_reader.py     # Read-only Anki DB access
-│   ├── stats_calculator.py # Calculate statistics
-│   ├── data_exporter.py   # Export to JSON
-│   ├── heatmap_generator.py # Generate SVG heatmap
+│   ├── anki_reader.py       # Read-only Anki DB access
+│   ├── stats_calculator.py  # Calculate statistics
+│   ├── data_exporter.py     # Export to JSON
+│   ├── heatmap_generator.py # Generate heatmap SVG
+│   ├── deck_svg_generator.py # Generate deck progress SVG
 │   ├── readme_generator.py  # Generate README
-│   └── sync.py            # Main sync script
-├── README.md              # Auto-generated stats display
-└── run_sync.sh            # Convenience script
+│   └── sync.py              # Main sync script
+├── README.md                # Auto-generated stats display
+└── run_sync.sh              # Convenience script
 ```
 
 ## Notes
