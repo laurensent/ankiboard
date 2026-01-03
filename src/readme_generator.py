@@ -2,7 +2,6 @@
 README Generator - Generate README.md with Anki statistics display
 """
 import json
-from datetime import datetime
 from pathlib import Path
 
 
@@ -23,49 +22,46 @@ class ReadmeGenerator:
         with open(stats_file, 'r', encoding='utf-8') as f:
             return json.load(f)
 
-    def format_time(self, minutes):
-        """Format minutes into readable time"""
-        if minutes < 60:
-            return f"{minutes}m"
-        hours = minutes // 60
-        mins = minutes % 60
-        if mins == 0:
-            return f"{hours}h"
-        return f"{hours}h {mins}m"
-
-    def generate_stats_table(self, stats):
-        """Generate markdown stats table"""
+    def generate_badges(self, stats):
+        """Generate shields.io style badges"""
         cards = stats['cards']
+        date = stats['generated_at'][:10]
 
-        table = """
-| Metric | Value |
-|--------|-------|
-| Total Cards | {total:,} |
-| Mature Cards | {mature:,} |
-| Learning | {learning:,} |
-| New Cards | {new:,} |
-| Suspended | {suspended:,} |
-| Current Streak | {streak} days |
-| Weekly Reviews | {weekly_reviews:,} |
-| Weekly Time | {weekly_time} |
-""".format(
-            total=cards['total'],
-            mature=cards['mature'],
-            learning=cards['learning'],
-            new=cards['new'],
-            suspended=cards['suspended'],
-            streak=stats['streak'],
-            weekly_reviews=stats['weekly_reviews'],
-            weekly_time=self.format_time(stats['weekly_time_minutes'])
+        badges = []
+
+        # Last sync badge (shields.io uses -- for hyphen)
+        date_encoded = date.replace("-", "--")
+        badges.append(
+            f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-blue)"
         )
 
-        return table.strip()
+        # Total cards
+        total_str = f"{cards['total']:,}".replace(",", "_")
+        badges.append(
+            f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-informational)"
+        )
+
+        # Streak
+        streak = stats['streak']
+        streak_color = "brightgreen" if streak >= 7 else ("green" if streak >= 3 else "yellow")
+        badges.append(
+            f"![Streak](https://img.shields.io/badge/Streak-{streak}_days-{streak_color})"
+        )
+
+        # Mastery percentage
+        total_active = cards['total'] - cards['suspended']
+        mastery_pct = int(cards['mature'] / total_active * 100) if total_active > 0 else 0
+        mastery_color = "brightgreen" if mastery_pct >= 80 else ("green" if mastery_pct >= 50 else "yellow")
+        badges.append(
+            f"![Mastery](https://img.shields.io/badge/Mastery-{mastery_pct}%25-{mastery_color})"
+        )
+
+        return " ".join(badges)
 
     def generate_decks_table(self, stats, max_decks=10):
-        """Generate table of top decks"""
+        """Generate table of top decks in collapsible section"""
         decks = stats.get('decks', {})
 
-        # Sort by total cards
         sorted_decks = sorted(
             decks.values(),
             key=lambda d: d.get('total', 0),
@@ -77,7 +73,8 @@ class ReadmeGenerator:
 
         lines = [
             "",
-            "### Decks",
+            "<details>",
+            "<summary><strong>Top Decks</strong></summary>",
             "",
             "| Deck | Total | Mature | New |",
             "|------|-------|--------|-----|"
@@ -92,31 +89,18 @@ class ReadmeGenerator:
                 f"{deck.get('mature', 0):,} | {deck.get('new', 0):,} |"
             )
 
+        lines.append("")
+        lines.append("</details>")
+
         return '\n'.join(lines)
-
-    def generate_progress_bar(self, current, total, width=20):
-        """Generate ASCII progress bar"""
-        if total == 0:
-            return "[" + " " * width + "] 0%"
-
-        ratio = min(current / total, 1.0)
-        filled = int(width * ratio)
-        empty = width - filled
-
-        percentage = int(ratio * 100)
-        return f"[{'#' * filled}{'-' * empty}] {percentage}%"
 
     def generate_readme(self):
         """Generate full README.md content"""
         stats = self.load_stats()
-        cards = stats['cards']
-
-        # Calculate active cards (excluding suspended)
-        total_active = cards['total'] - cards['suspended']
 
         readme = f"""# Anki Statistics
 
-> Auto-synced from Anki | Last updated: {stats['generated_at'][:10]}
+{self.generate_badges(stats)}
 
 ## Review Activity
 
@@ -128,21 +112,17 @@ class ReadmeGenerator:
 
 ## Statistics
 
-{self.generate_stats_table(stats)}
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="output/stats-card-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="output/stats-card.svg">
+  <img alt="Statistics" src="output/stats-card.svg">
+</picture>
 
 ## Progress
 
-**Mastery Progress** ({cards['mature']:,} / {total_active:,} cards)
-
-```
-{self.generate_progress_bar(cards['mature'], total_active, 30)}
-```
+<img src="output/progress-bar.svg" alt="Progress" width="300">
 
 {self.generate_decks_table(stats)}
-
----
-
-<sub>Generated by [anki-stats-sync](https://github.com/lori/anki-stats-sync)</sub>
 """
 
         return readme

@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from data_exporter import DataExporter
 from heatmap_generator import HeatmapGenerator
+from stats_svg_generator import StatsSvgGenerator
 from readme_generator import ReadmeGenerator
 
 
@@ -69,20 +70,26 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
         return False
 
     # Step 2: Generate heatmap
-    print("\n[2/4] Generating heatmap...")
+    print("\n[2/5] Generating heatmap...")
     generator = HeatmapGenerator(output_dir)
     light_file, dark_file = generator.generate_from_data(stats['heatmap_data'])
     print(f"  - Generated: {light_file.name}, {dark_file.name}")
 
-    # Step 3: Generate README
-    print("\n[3/4] Generating README...")
+    # Step 3: Generate stats SVGs
+    print("\n[3/5] Generating stats visualizations...")
+    stats_gen = StatsSvgGenerator(output_dir)
+    svg_files = stats_gen.generate_all(stats)
+    print(f"  - Generated: {', '.join(f.name for f in svg_files.values())}")
+
+    # Step 4: Generate README
+    print("\n[4/5] Generating README...")
     readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root)
     readme_path = readme_gen.write_readme()
     print(f"  - Generated: {readme_path.name}")
 
-    # Step 4: Commit changes (optional)
+    # Step 5: Commit changes (optional)
     if commit:
-        print("\n[4/4] Committing changes...")
+        print("\n[5/5] Committing changes...")
 
         # Check if in git repo
         success, _, _ = run_git_command(['status'], cwd=repo_root)
@@ -97,6 +104,10 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
             "data/heatmap.json",
             "output/heatmap.svg",
             "output/heatmap-dark.svg",
+            "output/stats-card.svg",
+            "output/stats-card-dark.svg",
+            "output/progress-bar.svg",
+            "output/progress-ring.svg",
             "README.md"
         ]
 
@@ -131,7 +142,7 @@ def sync_stats(db_path=None, commit=True, push=False, repo_root=None):
             else:
                 print(f"  - Push failed: {stderr}")
     else:
-        print("\n[4/4] Skipping commit (--no-commit)")
+        print("\n[5/5] Skipping commit (--no-commit)")
 
     print("\n" + "=" * 40)
     print("Sync complete!")

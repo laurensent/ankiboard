@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <circle cx="60.0" cy="60.0" r="54.0" fill="none" stroke="#e0e0e0" stroke-width="12"/>
+  <circle cx="60.0" cy="60.0" r="54.0" fill="none" stroke="#4c1" stroke-width="12"
+    stroke-linecap="round" stroke-dasharray="339.29200658769764" stroke-dashoffset="335.89908652182066"
+    transform="rotate(-90 60.0 60.0)"/>
+  <text x="60.0" y="60.0" text-anchor="middle" dominant-baseline="middle"
+    font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#333">1%</text>
+  <text x="60.0" y="78.0" text-anchor="middle" dominant-baseline="middle"
+    font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#666">Mastery</text>
+</svg>
