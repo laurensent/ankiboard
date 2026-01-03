@@ -38,9 +38,9 @@ class AnkiReader:
         self.conn = None
 
     def __enter__(self):
-        # Open in read-only mode using URI (URL-encode path for spaces)
+        # Open in immutable mode - works with WAL databases and prevents any writes
         encoded_path = quote(self.db_path, safe='/:')
-        uri = f"file:{encoded_path}?mode=ro"
+        uri = f"file:{encoded_path}?immutable=1"
         self.conn = sqlite3.connect(uri, uri=True)
         self.conn.row_factory = sqlite3.Row
         return self
