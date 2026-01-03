@@ -37,7 +37,7 @@ def run_git_command(args, cwd=None):
         return False, "", "Git not found"
 
 
-def sync_stats(db_path=None, commit=True, push=False, repo_root=None, repo_url=None):
+def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=None):
     """Main sync function"""
     if repo_root is None:
         repo_root = Path(__file__).parent.parent
@@ -162,9 +162,9 @@ def main():
         help='Export data only, do not commit'
     )
     parser.add_argument(
-        '--push',
+        '--no-push',
         action='store_true',
-        help='Push after committing'
+        help='Do not push after committing'
     )
     parser.add_argument(
         '--repo', '-r',
@@ -182,7 +182,7 @@ def main():
     success = sync_stats(
         db_path=args.db,
         commit=not args.no_commit,
-        push=args.push,
+        push=not args.no_push,
         repo_root=args.repo,
         repo_url=args.repo_url
     )
