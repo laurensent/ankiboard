@@ -7,20 +7,21 @@ from pathlib import Path
 class DeckCardsGenerator:
     """Generate SVG bar chart for monthly deck reviews ranking"""
 
-    # Bar dimensions for 792px width (matching heatmap)
-    BAR_WIDTH = 60
-    BAR_GAP = 12
+    # Fixed dimensions
+    TOTAL_WIDTH = 792  # Fixed width to match heatmap
     MAX_BAR_HEIGHT = 80
     MIN_BAR_HEIGHT = 3
+    MIN_BAR_WIDTH = 20  # Minimum bar width
+    BAR_GAP_RATIO = 0.2  # Gap is 20% of bar width
 
     def __init__(self, output_dir="output"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def generate_svg(self, monthly_reviews, dark_mode=False, max_decks=10):
+    def generate_svg(self, monthly_reviews, dark_mode=False):
         """Generate SVG vertical bar chart for monthly deck reviews"""
-        # Take all decks up to max (including 0 reviews)
-        sorted_decks = monthly_reviews[:max_decks]
+        # Use all decks (no max limit)
+        sorted_decks = monthly_reviews
 
         if not sorted_decks:
             return self._generate_empty_svg(dark_mode)
@@ -39,13 +40,20 @@ class DeckCardsGenerator:
             text_color = '#1f2328'
             label_color = '#656d76'
 
-        # Calculate dimensions (792px width matching heatmap)
+        # Calculate dimensions
         num_bars = len(sorted_decks)
         left_margin = 40
         top_margin = 20
         bottom_margin = 60
-        width = 792  # Fixed width to match heatmap
+        width = self.TOTAL_WIDTH
         height = top_margin + self.MAX_BAR_HEIGHT + bottom_margin
+
+        # Calculate adaptive bar width
+        available_width = width - left_margin - 20  # 20px right margin
+        # bar_width + gap = bar_width * (1 + GAP_RATIO)
+        bar_width = available_width / (num_bars * (1 + self.BAR_GAP_RATIO))
+        bar_width = max(self.MIN_BAR_WIDTH, bar_width)
+        bar_gap = bar_width * self.BAR_GAP_RATIO
 
         # Get max count for scaling
         max_count = max(d.get('reviews', 0) for d in sorted_decks)
@@ -60,7 +68,7 @@ class DeckCardsGenerator:
         ]
 
         for i, deck in enumerate(sorted_decks):
-            x = i * (self.BAR_WIDTH + self.BAR_GAP)
+            x = i * (bar_width + bar_gap)
             count = deck.get('reviews', 0)
 
             # Calculate bar height and color
@@ -79,7 +87,7 @@ class DeckCardsGenerator:
             label_y = bar_y - 8
             if count > 0:
                 svg_parts.append(
-                    f'<text x="{x + self.BAR_WIDTH / 2}" y="{label_y}" '
+                    f'<text x="{x + bar_width / 2}" y="{label_y}" '
                     f'fill="{text_color}" font-size="10" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
                     f'font-weight="600">{count}</text>'
@@ -87,7 +95,7 @@ class DeckCardsGenerator:
             else:
                 # Show 0 in label color (less prominent)
                 svg_parts.append(
-                    f'<text x="{x + self.BAR_WIDTH / 2}" y="{self.MAX_BAR_HEIGHT - 10}" '
+                    f'<text x="{x + bar_width / 2}" y="{self.MAX_BAR_HEIGHT - 10}" '
                     f'fill="{label_color}" font-size="10" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                     f'0</text>'
@@ -96,7 +104,7 @@ class DeckCardsGenerator:
             # Bar
             rx = 2 if bar_height > 4 else 1
             svg_parts.append(
-                f'<rect x="{x}" y="{bar_y}" width="{self.BAR_WIDTH}" '
+                f'<rect x="{x}" y="{bar_y}" width="{bar_width}" '
                 f'height="{bar_height}" fill="{color}" rx="{rx}" ry="{rx}">'
                 f'<title>{count} reviews - {deck["name"]}</title></rect>'
             )
@@ -105,10 +113,12 @@ class DeckCardsGenerator:
             name = deck['name']
             if '::' in name:
                 name = name.split('::')[-1]
-            if len(name) > 10:
-                name = name[:9] + '..'
+            # Truncate based on bar width
+            max_chars = max(5, int(bar_width / 6))
+            if len(name) > max_chars:
+                name = name[:max_chars - 2] + '..'
 
-            label_x = x + self.BAR_WIDTH / 2
+            label_x = x + bar_width / 2
             label_y = self.MAX_BAR_HEIGHT + 12
             svg_parts.append(
                 f'<text x="{label_x}" y="{label_y}" '
@@ -134,10 +144,10 @@ class DeckCardsGenerator:
 font-size="13" fill="{text}">No data</text>
 </svg>'''
 
-    def generate_all(self, monthly_reviews, max_decks=10):
+    def generate_all(self, monthly_reviews):
         """Generate both light and dark versions"""
-        light_svg = self.generate_svg(monthly_reviews, dark_mode=False, max_decks=max_decks)
-        dark_svg = self.generate_svg(monthly_reviews, dark_mode=True, max_decks=max_decks)
+        light_svg = self.generate_svg(monthly_reviews, dark_mode=False)
+        dark_svg = self.generate_svg(monthly_reviews, dark_mode=True)
 
         light_file = self.output_dir / "cards.svg"
         dark_file = self.output_dir / "cards-dark.svg"

@@ -247,6 +247,41 @@
       "id": "1756284063495",
       "name": "06 Project::WAsync",
       "reviews": 0
+    },
+    {
+      "id": "1752582991326",
+      "name": "01 Java::JavaBasic",
+      "reviews": 0
+    },
+    {
+      "id": "1753177443885",
+      "name": "04 Kafka",
+      "reviews": 0
+    },
+    {
+      "id": "1752591422460",
+      "name": "01 Java::JavaCollections",
+      "reviews": 0
+    },
+    {
+      "id": "1752591472937",
+      "name": "01 Java::JVM",
+      "reviews": 0
+    },
+    {
+      "id": "1752591490821",
+      "name": "01 Java::SpringBoot",
+      "reviews": 0
+    },
+    {
+      "id": "1760322108697",
+      "name": "06 Project::Resume",
+      "reviews": 0
+    },
+    {
+      "id": "1752591461759",
+      "name": "01 Java::JavaThreadCode",
+      "reviews": 0
     }
   ],
   "monthly_deck_reviews": [
@@ -298,6 +333,41 @@
     {
       "id": "1756284035793",
       "name": "06 Project::QJob",
+      "reviews": 0
+    },
+    {
+      "id": "1752591496717",
+      "name": "01 Java::SpringCloud",
+      "reviews": 0
+    },
+    {
+      "id": "1756284063495",
+      "name": "06 Project::WAsync",
+      "reviews": 0
+    },
+    {
+      "id": "1753177443885",
+      "name": "04 Kafka",
+      "reviews": 0
+    },
+    {
+      "id": "1752591472937",
+      "name": "01 Java::JVM",
+      "reviews": 0
+    },
+    {
+      "id": "1752591490821",
+      "name": "01 Java::SpringBoot",
+      "reviews": 0
+    },
+    {
+      "id": "1760322108697",
+      "name": "06 Project::Resume",
+      "reviews": 0
+    },
+    {
+      "id": "1752591461759",
+      "name": "01 Java::JavaThreadCode",
       "reviews": 0
     }
   ],
@@ -2496,5 +2566,5 @@
       "week": 52
     }
   ],
-  "generated_at": "2026-01-05T00:26:21.960963"
+  "generated_at": "2026-01-05T00:35:21.240347"
 }

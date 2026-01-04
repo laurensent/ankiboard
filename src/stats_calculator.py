@@ -40,12 +40,12 @@ class StatsCalculator:
             'generated_at': datetime.now().isoformat()
         }
 
-    def _build_deck_reviews_ranking(self, decks, deck_reviews, max_decks=10):
-        """Build ranked list of decks by review count, fill with top decks (0 reviews) if needed"""
+    def _build_deck_reviews_ranking(self, decks, deck_reviews):
+        """Build ranked list of all decks by review count, fill with 0-review decks"""
         ranked = []
         seen_ids = set()
 
-        # First add decks with reviews this week
+        # First add decks with reviews
         for deck_id, count in deck_reviews.items():
             if deck_id in decks:
                 deck = decks[deck_id]
@@ -60,26 +60,22 @@ class StatsCalculator:
         # Sort by review count descending
         ranked.sort(key=lambda x: x['reviews'], reverse=True)
 
-        # If not enough, fill with top decks by card count
-        if len(ranked) < max_decks:
-            # Get all decks with cards, sorted by total
-            all_decks = [
-                {'id': did, 'name': d['name'], 'reviews': 0, 'total': d.get('total', 0)}
-                for did, d in decks.items()
-                if d.get('total', 0) > 0 and did not in seen_ids
-            ]
-            all_decks.sort(key=lambda x: x['total'], reverse=True)
+        # Add remaining decks with 0 reviews (sorted by card count)
+        remaining_decks = [
+            {'id': did, 'name': d['name'], 'reviews': 0, 'total': d.get('total', 0)}
+            for did, d in decks.items()
+            if d.get('total', 0) > 0 and did not in seen_ids
+        ]
+        remaining_decks.sort(key=lambda x: x['total'], reverse=True)
 
-            for deck in all_decks:
-                if len(ranked) >= max_decks:
-                    break
-                ranked.append({
-                    'id': deck['id'],
-                    'name': deck['name'],
-                    'reviews': 0
-                })
+        for deck in remaining_decks:
+            ranked.append({
+                'id': deck['id'],
+                'name': deck['name'],
+                'reviews': 0
+            })
 
-        return ranked[:max_decks]
+        return ranked
 
     def _calculate_streak(self, daily_reviews):
         """Calculate current study streak"""
