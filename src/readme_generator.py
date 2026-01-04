@@ -44,6 +44,19 @@ class ReadmeGenerator:
             f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-informational)"
         )
 
+        # Weekly reviews (green - matches bar chart)
+        weekly_reviews = stats.get('weekly_reviews', 0)
+        badges.append(
+            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-2ea043)"
+        )
+
+        # Weekly time (purple - matches time chart)
+        weekly_time = stats.get('weekly_time_minutes', 0)
+        time_str = f"{weekly_time}_min"
+        badges.append(
+            f"![Weekly Time](https://img.shields.io/badge/Weekly_Time-{time_str}-8250df)"
+        )
+
         # Streak (use blue tones to differentiate from mastery)
         streak = stats['streak']
         streak_color = "blue" if streak >= 7 else ("9cf" if streak >= 3 else "orange")
