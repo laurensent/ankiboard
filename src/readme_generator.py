@@ -85,6 +85,11 @@ class ReadmeGenerator:
   <img alt="Weekly Reviews" src="output/weekly.svg">
 </picture>
 <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="output/time-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="output/time.svg">
+  <img alt="Weekly Time" src="output/time.svg">
+</picture>
+<picture>
   <source media="(prefers-color-scheme: dark)" srcset="output/reviews-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="output/reviews.svg">
   <img alt="Weekly Top Decks" src="output/reviews.svg">

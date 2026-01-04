@@ -17,6 +17,7 @@ class StatsCalculator:
             card_counts = reader.get_card_counts()
             decks = reader.get_decks()
             daily_reviews = reader.get_daily_review_counts(365)
+            daily_time = reader.get_daily_review_time(365)
             weekly_time = reader.get_total_review_time(7)
             deck_reviews = reader.get_deck_review_counts(7)
 
@@ -27,6 +28,7 @@ class StatsCalculator:
             'cards': card_counts,
             'decks': decks,
             'daily_reviews': daily_reviews,
+            'daily_time': daily_time,
             'deck_reviews': deck_reviews_ranked,
             'streak': self._calculate_streak(daily_reviews),
             'weekly_reviews': self._calculate_weekly_reviews(daily_reviews),

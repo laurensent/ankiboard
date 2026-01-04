@@ -14,7 +14,9 @@
       "Bash(lsof:*)",
       "Bash(sqlite3:*)",
       "Bash(head:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git reset:*)",
+      "Bash(git push:*)"
     ]
   }
 }

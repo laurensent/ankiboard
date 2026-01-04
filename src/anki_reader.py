@@ -177,6 +177,26 @@ class AnkiReader:
         row = cursor.fetchone()
         return row['total_time'] or 0
 
+    def get_daily_review_time(self, days=365):
+        """Get review time in minutes grouped by day"""
+        cursor = self.conn.cursor()
+
+        cutoff = int((datetime.now() - timedelta(days=days)).timestamp() * 1000)
+
+        cursor.execute("""
+            SELECT
+                date(id/1000, 'unixepoch', 'localtime') as review_date,
+                SUM(time) as total_time
+            FROM revlog
+            WHERE id > ?
+            GROUP BY review_date
+            ORDER BY review_date
+        """, (cutoff,))
+
+        # Convert milliseconds to minutes
+        return {row['review_date']: (row['total_time'] or 0) // 60000
+                for row in cursor.fetchall()}
+
     def get_deck_review_counts(self, days=7):
         """Get review counts per deck for past N days"""
         cursor = self.conn.cursor()
