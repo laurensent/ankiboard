@@ -20,9 +20,11 @@ class StatsCalculator:
             daily_time = reader.get_daily_review_time(365)
             weekly_time = reader.get_total_review_time(7)
             deck_reviews = reader.get_deck_review_counts(7)
+            monthly_deck_reviews = reader.get_deck_review_counts(30)
 
         # Build deck reviews ranking with names
         deck_reviews_ranked = self._build_deck_reviews_ranking(decks, deck_reviews)
+        monthly_reviews_ranked = self._build_deck_reviews_ranking(decks, monthly_deck_reviews)
 
         return {
             'cards': card_counts,
@@ -30,6 +32,7 @@ class StatsCalculator:
             'daily_reviews': daily_reviews,
             'daily_time': daily_time,
             'deck_reviews': deck_reviews_ranked,
+            'monthly_deck_reviews': monthly_reviews_ranked,
             'streak': self._calculate_streak(daily_reviews),
             'weekly_reviews': self._calculate_weekly_reviews(daily_reviews),
             'weekly_time_minutes': weekly_time // 60000,
@@ -37,8 +40,8 @@ class StatsCalculator:
             'generated_at': datetime.now().isoformat()
         }
 
-    def _build_deck_reviews_ranking(self, decks, deck_reviews, max_decks=7):
-        """Build ranked list of decks by weekly review count, fill with top decks if needed"""
+    def _build_deck_reviews_ranking(self, decks, deck_reviews, max_decks=10):
+        """Build ranked list of decks by review count, fill with top decks (0 reviews) if needed"""
         ranked = []
         seen_ids = set()
 

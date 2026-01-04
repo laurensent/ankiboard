@@ -232,6 +232,73 @@
       "id": "1752591450102",
       "name": "01 Java::JavaConcurrency",
       "reviews": 0
+    },
+    {
+      "id": "1756284035793",
+      "name": "06 Project::QJob",
+      "reviews": 0
+    },
+    {
+      "id": "1752591496717",
+      "name": "01 Java::SpringCloud",
+      "reviews": 0
+    },
+    {
+      "id": "1756284063495",
+      "name": "06 Project::WAsync",
+      "reviews": 0
+    }
+  ],
+  "monthly_deck_reviews": [
+    {
+      "id": "1766645040578",
+      "name": "00 CodeTop",
+      "reviews": 17
+    },
+    {
+      "id": "1752591422460",
+      "name": "01 Java::JavaCollections",
+      "reviews": 17
+    },
+    {
+      "id": "1752582991326",
+      "name": "01 Java::JavaBasic",
+      "reviews": 10
+    },
+    {
+      "id": "1752591450102",
+      "name": "01 Java::JavaConcurrency",
+      "reviews": 8
+    },
+    {
+      "id": "1763966727334",
+      "name": "00 QA",
+      "reviews": 0
+    },
+    {
+      "id": "1760599190570",
+      "name": "03 Redis",
+      "reviews": 0
+    },
+    {
+      "id": "1760600537608",
+      "name": "Network",
+      "reviews": 0
+    },
+    {
+      "id": "1760519859019",
+      "name": "02 MySQL",
+      "reviews": 0
+    },
+    {
+      "id": "1752591481967",
+      "name": "01 Java::SSM",
+      "reviews": 0
+    },
+    {
+      "id": "1756284035793",
+      "name": "06 Project::QJob",
+      "reviews": 0
     }
   ],
   "streak": 2,
@@ -2429,5 +2496,5 @@
       "week": 52
     }
   ],
-  "generated_at": "2026-01-05T00:01:54.923437"
+  "generated_at": "2026-01-05T00:17:29.716730"
 }

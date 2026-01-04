@@ -22,7 +22,7 @@ from heatmap_generator import HeatmapGenerator
 from deck_svg_generator import DeckSvgGenerator
 from weekly_bar_generator import WeeklyBarGenerator
 from weekly_time_generator import WeeklyTimeGenerator
-from deck_reviews_generator import DeckReviewsGenerator
+from deck_cards_generator import DeckCardsGenerator
 from readme_generator import ReadmeGenerator
 
 
@@ -96,11 +96,11 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
     time_light, time_dark = time_gen.generate_from_data(stats['daily_time'])
     print(f"  - Generated: {time_light.name}, {time_dark.name}")
 
-    # Step 6: Generate deck reviews ranking
-    print("\n[6/8] Generating deck reviews ranking...")
-    reviews_gen = DeckReviewsGenerator(output_dir)
-    reviews_light, reviews_dark = reviews_gen.generate_all(stats['deck_reviews'])
-    print(f"  - Generated: {reviews_light.name}, {reviews_dark.name}")
+    # Step 6: Generate monthly deck reviews ranking
+    print("\n[6/8] Generating monthly deck reviews...")
+    cards_gen = DeckCardsGenerator(output_dir)
+    cards_light, cards_dark = cards_gen.generate_all(stats['monthly_deck_reviews'])
+    print(f"  - Generated: {cards_light.name}, {cards_dark.name}")
 
     # Step 7: Generate README
     print("\n[7/8] Generating README...")
@@ -131,8 +131,8 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
             "output/weekly-dark.svg",
             "output/time.svg",
             "output/time-dark.svg",
-            "output/reviews.svg",
-            "output/reviews-dark.svg",
+            "output/cards.svg",
+            "output/cards-dark.svg",
             "README.md"
         ]
 

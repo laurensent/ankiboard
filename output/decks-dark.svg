@@ -1,42 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="380">
+<svg xmlns="http://www.w3.org/2000/svg" width="792" height="380">
 <defs>
   <linearGradient id="barGrad" x1="0%" y1="0%" x2="100%" y2="0%">
     <stop offset="0%" style="stop-color:#238636"/>
     <stop offset="100%" style="stop-color:#2ea043"/>
   </linearGradient>
 </defs>
-<rect width="300" height="380" fill="#0d1117"/>
+<rect width="792" height="380" fill="#0d1117"/>
 <text x="0" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">00 CodeTop</text>
-<text x="300" y="14" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">11/1,140</text>
-<rect x="0" y="24" width="300" height="6" fill="#21262d" rx="3"/>
-<rect x="0" y="24" width="2.8947368421052633" height="6" fill="url(#barGrad)" rx="3"/>
+<text x="792" y="14" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">11/1,140</text>
+<rect x="0" y="24" width="792" height="6" fill="#21262d" rx="3"/>
+<rect x="0" y="24" width="7.642105263157895" height="6" fill="url(#barGrad)" rx="3"/>
 <text x="0" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">00 QA</text>
-<text x="300" y="52" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/175</text>
-<rect x="0" y="62" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="52" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/175</text>
+<rect x="0" y="62" width="792" height="6" fill="#21262d" rx="3"/>
 <text x="0" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">03 Redis</text>
-<text x="300" y="90" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/127</text>
-<rect x="0" y="100" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="90" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/127</text>
+<rect x="0" y="100" width="792" height="6" fill="#21262d" rx="3"/>
 <text x="0" y="128" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">Network</text>
-<text x="300" y="128" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/120</text>
-<rect x="0" y="138" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="128" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/120</text>
+<rect x="0" y="138" width="792" height="6" fill="#21262d" rx="3"/>
 <text x="0" y="166" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">02 MySQL</text>
-<text x="300" y="166" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/119</text>
-<rect x="0" y="176" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="166" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/119</text>
+<rect x="0" y="176" width="792" height="6" fill="#21262d" rx="3"/>
 <text x="0" y="204" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">01 Java::SSM</text>
-<text x="300" y="204" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/112</text>
-<rect x="0" y="214" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="204" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/112</text>
+<rect x="0" y="214" width="792" height="6" fill="#21262d" rx="3"/>
 <text x="0" y="242" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">01 Java::JavaConcurrency</text>
-<text x="300" y="242" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">9/111</text>
-<rect x="0" y="252" width="300" height="6" fill="#21262d" rx="3"/>
-<rect x="0" y="252" width="24.324324324324326" height="6" fill="url(#barGrad)" rx="3"/>
+<text x="792" y="242" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">9/111</text>
+<rect x="0" y="252" width="792" height="6" fill="#21262d" rx="3"/>
+<rect x="0" y="252" width="64.21621621621622" height="6" fill="url(#barGrad)" rx="3"/>
 <text x="0" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">06 Project::QJob</text>
-<text x="300" y="280" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">10/82</text>
-<rect x="0" y="290" width="300" height="6" fill="#21262d" rx="3"/>
-<rect x="0" y="290" width="36.58536585365854" height="6" fill="url(#barGrad)" rx="3"/>
+<text x="792" y="280" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">10/82</text>
+<rect x="0" y="290" width="792" height="6" fill="#21262d" rx="3"/>
+<rect x="0" y="290" width="96.58536585365853" height="6" fill="url(#barGrad)" rx="3"/>
 <text x="0" y="318" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">01 Java::SpringCloud</text>
-<text x="300" y="318" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/81</text>
-<rect x="0" y="328" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="318" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/81</text>
+<rect x="0" y="328" width="792" height="6" fill="#21262d" rx="3"/>
 <text x="0" y="356" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#e6edf3">06 Project::WAsync</text>
-<text x="300" y="356" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/79</text>
-<rect x="0" y="366" width="300" height="6" fill="#21262d" rx="3"/>
+<text x="792" y="356" text-anchor="end" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e">0/79</text>
+<rect x="0" y="366" width="792" height="6" fill="#21262d" rx="3"/>
 </svg>

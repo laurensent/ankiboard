@@ -40,10 +40,10 @@ class DeckSvgGenerator:
             grad_start = "#2da44e"
             grad_end = "#3fb950"
 
-        # Layout
+        # Layout (792px width matching heatmap)
         row_height = 38
         bar_height = 6
-        bar_width = 300
+        bar_width = 792
         width = bar_width
         height = len(sorted_decks) * row_height
 

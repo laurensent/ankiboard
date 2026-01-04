@@ -9,8 +9,8 @@ from pathlib import Path
 class WeeklyBarGenerator:
     """Generate SVG bar chart for weekly reviews"""
 
-    # Bar dimensions
-    BAR_WIDTH = 36
+    # Bar dimensions (390px total width for side-by-side layout)
+    BAR_WIDTH = 42
     BAR_GAP = 8
     MAX_BAR_HEIGHT = 80
     MIN_BAR_HEIGHT = 3  # Minimum height for zero values
@@ -23,19 +23,19 @@ class WeeklyBarGenerator:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def get_weekly_data(self, daily_reviews):
-        """Get review counts for the current week (Mon-Sun)"""
+        """Get review counts for the last 7 days (rolling window)"""
         today = datetime.now().date()
-        # Find Monday of current week
-        monday = today - timedelta(days=today.weekday())
 
         weekly_data = []
-        for i in range(7):
-            day = monday + timedelta(days=i)
+        for i in range(6, -1, -1):  # 6 days ago to today
+            day = today - timedelta(days=i)
             date_str = day.strftime('%Y-%m-%d')
             count = daily_reviews.get(date_str, 0)
+            # Use short date format (MM/DD)
+            label = day.strftime('%m/%d')
             weekly_data.append({
                 'date': date_str,
-                'day': self.DAY_LABELS[i],
+                'day': label,
                 'count': count
             })
 
@@ -57,12 +57,12 @@ class WeeklyBarGenerator:
             text_color = '#1f2328'
             label_color = '#656d76'
 
-        # Calculate dimensions (match reviews.svg height for alignment)
+        # Calculate dimensions (390px width for side-by-side layout)
         left_margin = 25
         top_margin = 20
-        bottom_margin = 60  # Same as reviews.svg for alignment
+        bottom_margin = 35
         chart_width = 7 * (self.BAR_WIDTH + self.BAR_GAP) - self.BAR_GAP
-        width = left_margin + chart_width + 25
+        width = 390  # Fixed width for consistent layout
         height = top_margin + self.MAX_BAR_HEIGHT + bottom_margin
 
         # Get max count for scaling
