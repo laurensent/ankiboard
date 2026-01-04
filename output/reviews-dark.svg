@@ -1,0 +1,26 @@
+<svg width="375" height="160" viewBox="0 0 375 160" xmlns="http://www.w3.org/2000/svg">
+<rect width="375" height="160" fill="#0d1117"/>
+<g transform="translate(25, 20)">
+<text x="18.0" y="-8" fill="#e6edf3" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-weight="600">17</text>
+<rect x="0" y="0" width="36" height="80" fill="#26a641" rx="2" ry="2"><title>17 reviews - 00 CodeTop</title></rect>
+<text x="18.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 18.0, 92)">00 CodeTop</text>
+<text x="62.0" y="70" fill="#8b949e" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<rect x="44" y="77" width="36" height="3" fill="#161b22" rx="1" ry="1"><title>0 reviews - 00 QA</title></rect>
+<text x="62.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 62.0, 92)">00 QA</text>
+<text x="106.0" y="70" fill="#8b949e" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<rect x="88" y="77" width="36" height="3" fill="#161b22" rx="1" ry="1"><title>0 reviews - 03 Redis</title></rect>
+<text x="106.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 106.0, 92)">03 Redis</text>
+<text x="150.0" y="70" fill="#8b949e" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<rect x="132" y="77" width="36" height="3" fill="#161b22" rx="1" ry="1"><title>0 reviews - Network</title></rect>
+<text x="150.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 150.0, 92)">Network</text>
+<text x="194.0" y="70" fill="#8b949e" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<rect x="176" y="77" width="36" height="3" fill="#161b22" rx="1" ry="1"><title>0 reviews - 02 MySQL</title></rect>
+<text x="194.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 194.0, 92)">02 MySQL</text>
+<text x="238.0" y="70" fill="#8b949e" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<rect x="220" y="77" width="36" height="3" fill="#161b22" rx="1" ry="1"><title>0 reviews - 01 Java::SSM</title></rect>
+<text x="238.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 238.0, 92)">SSM</text>
+<text x="282.0" y="70" fill="#8b949e" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">0</text>
+<rect x="264" y="77" width="36" height="3" fill="#161b22" rx="1" ry="1"><title>0 reviews - 01 Java::JavaConcurrency</title></rect>
+<text x="282.0" y="92" fill="#8b949e" font-size="10" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" transform="rotate(45, 282.0, 92)">JavaConcu..</text>
+</g>
+</svg>

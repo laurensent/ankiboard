@@ -18,17 +18,63 @@ class StatsCalculator:
             decks = reader.get_decks()
             daily_reviews = reader.get_daily_review_counts(365)
             weekly_time = reader.get_total_review_time(7)
+            deck_reviews = reader.get_deck_review_counts(7)
+
+        # Build deck reviews ranking with names
+        deck_reviews_ranked = self._build_deck_reviews_ranking(decks, deck_reviews)
 
         return {
             'cards': card_counts,
             'decks': decks,
             'daily_reviews': daily_reviews,
+            'deck_reviews': deck_reviews_ranked,
             'streak': self._calculate_streak(daily_reviews),
             'weekly_reviews': self._calculate_weekly_reviews(daily_reviews),
             'weekly_time_minutes': weekly_time // 60000,
             'heatmap_data': self._prepare_heatmap_data(daily_reviews),
             'generated_at': datetime.now().isoformat()
         }
+
+    def _build_deck_reviews_ranking(self, decks, deck_reviews, max_decks=7):
+        """Build ranked list of decks by weekly review count, fill with top decks if needed"""
+        ranked = []
+        seen_ids = set()
+
+        # First add decks with reviews this week
+        for deck_id, count in deck_reviews.items():
+            if deck_id in decks:
+                deck = decks[deck_id]
+                if deck.get('total', 0) > 0:
+                    ranked.append({
+                        'id': deck_id,
+                        'name': deck['name'],
+                        'reviews': count
+                    })
+                    seen_ids.add(deck_id)
+
+        # Sort by review count descending
+        ranked.sort(key=lambda x: x['reviews'], reverse=True)
+
+        # If not enough, fill with top decks by card count
+        if len(ranked) < max_decks:
+            # Get all decks with cards, sorted by total
+            all_decks = [
+                {'id': did, 'name': d['name'], 'reviews': 0, 'total': d.get('total', 0)}
+                for did, d in decks.items()
+                if d.get('total', 0) > 0 and did not in seen_ids
+            ]
+            all_decks.sort(key=lambda x: x['total'], reverse=True)
+
+            for deck in all_decks:
+                if len(ranked) >= max_decks:
+                    break
+                ranked.append({
+                    'id': deck['id'],
+                    'name': deck['name'],
+                    'reviews': 0
+                })
+
+        return ranked[:max_decks]
 
     def _calculate_streak(self, daily_reviews):
         """Calculate current study streak"""

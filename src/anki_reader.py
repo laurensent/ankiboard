@@ -177,6 +177,26 @@ class AnkiReader:
         row = cursor.fetchone()
         return row['total_time'] or 0
 
+    def get_deck_review_counts(self, days=7):
+        """Get review counts per deck for past N days"""
+        cursor = self.conn.cursor()
+
+        cutoff = int((datetime.now() - timedelta(days=days)).timestamp() * 1000)
+
+        # Join revlog with cards to get deck info
+        cursor.execute("""
+            SELECT
+                c.did as deck_id,
+                COUNT(*) as review_count
+            FROM revlog r
+            JOIN cards c ON r.cid = c.id
+            WHERE r.id > ?
+            GROUP BY c.did
+            ORDER BY review_count DESC
+        """, (cutoff,))
+
+        return {str(row['deck_id']): row['review_count'] for row in cursor.fetchall()}
+
 
 if __name__ == "__main__":
     # Test the reader

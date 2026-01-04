@@ -44,9 +44,9 @@ class ReadmeGenerator:
             f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-informational)"
         )
 
-        # Streak
+        # Streak (use blue tones to differentiate from mastery)
         streak = stats['streak']
-        streak_color = "brightgreen" if streak >= 7 else ("green" if streak >= 3 else "yellow")
+        streak_color = "blue" if streak >= 7 else ("9cf" if streak >= 3 else "orange")
         badges.append(
             f"![Streak](https://img.shields.io/badge/Streak-{streak}_days-{streak_color})"
         )
@@ -77,12 +77,25 @@ class ReadmeGenerator:
   <img alt="Review Heatmap" src="output/heatmap.svg">
 </picture>
 
+## This Week
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="output/weekly-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="output/weekly.svg">
+  <img alt="Weekly Reviews" src="output/weekly.svg">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="output/reviews-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="output/reviews.svg">
+  <img alt="Weekly Top Decks" src="output/reviews.svg">
+</picture>
+
 ## Top Decks
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="output/decks-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="output/decks.svg">
-  <img alt="Top Decks" src="output/decks.svg">
+  <img alt="Deck Progress" src="output/decks.svg">
 </picture>
 """
 

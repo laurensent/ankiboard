@@ -10,7 +10,11 @@
       "Bash(./run_sync.sh:*)",
       "Bash(git push)",
       "Bash(cat:*)",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "Bash(lsof:*)",
+      "Bash(sqlite3:*)",
+      "Bash(head:*)",
+      "Bash(tree:*)"
     ]
   }
 }

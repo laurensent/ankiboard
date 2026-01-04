@@ -20,6 +20,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from data_exporter import DataExporter
 from heatmap_generator import HeatmapGenerator
 from deck_svg_generator import DeckSvgGenerator
+from weekly_bar_generator import WeeklyBarGenerator
+from deck_reviews_generator import DeckReviewsGenerator
 from readme_generator import ReadmeGenerator
 
 
@@ -50,7 +52,7 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
     print("=" * 40)
 
     # Step 1: Export data from Anki
-    print("\n[1/5] Exporting statistics...")
+    print("\n[1/7] Exporting statistics...")
     try:
         exporter = DataExporter(data_dir)
         stats = exporter.export_all(db_path)
@@ -70,26 +72,38 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
         return False
 
     # Step 2: Generate heatmap
-    print("\n[2/5] Generating heatmap...")
+    print("\n[2/7] Generating heatmap...")
     generator = HeatmapGenerator(output_dir)
     light_file, dark_file = generator.generate_from_data(stats['heatmap_data'])
     print(f"  - Generated: {light_file.name}, {dark_file.name}")
 
     # Step 3: Generate deck progress SVG
-    print("\n[3/5] Generating deck visualization...")
+    print("\n[3/7] Generating deck visualization...")
     deck_gen = DeckSvgGenerator(output_dir)
     deck_light, deck_dark = deck_gen.generate_all(stats['decks'])
     print(f"  - Generated: {deck_light.name}, {deck_dark.name}")
 
-    # Step 4: Generate README
-    print("\n[4/5] Generating README...")
+    # Step 4: Generate weekly bar chart
+    print("\n[4/7] Generating weekly bar chart...")
+    weekly_gen = WeeklyBarGenerator(output_dir)
+    weekly_light, weekly_dark = weekly_gen.generate_from_data(stats['daily_reviews'])
+    print(f"  - Generated: {weekly_light.name}, {weekly_dark.name}")
+
+    # Step 5: Generate deck reviews ranking
+    print("\n[5/7] Generating deck reviews ranking...")
+    reviews_gen = DeckReviewsGenerator(output_dir)
+    reviews_light, reviews_dark = reviews_gen.generate_all(stats['deck_reviews'])
+    print(f"  - Generated: {reviews_light.name}, {reviews_dark.name}")
+
+    # Step 6: Generate README
+    print("\n[6/7] Generating README...")
     readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root, repo_url=repo_url)
     readme_path = readme_gen.write_readme()
     print(f"  - Generated: {readme_path.name}")
 
-    # Step 5: Commit changes (optional)
+    # Step 7: Commit changes (optional)
     if commit:
-        print("\n[5/5] Committing changes...")
+        print("\n[7/7] Committing changes...")
 
         # Check if in git repo
         success, _, _ = run_git_command(['status'], cwd=repo_root)
@@ -106,6 +120,10 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
             "output/heatmap-dark.svg",
             "output/decks.svg",
             "output/decks-dark.svg",
+            "output/weekly.svg",
+            "output/weekly-dark.svg",
+            "output/reviews.svg",
+            "output/reviews-dark.svg",
             "README.md"
         ]
 
@@ -140,7 +158,7 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
             else:
                 print(f"  - Push failed: {stderr}")
     else:
-        print("\n[5/5] Skipping commit (--no-commit)")
+        print("\n[7/7] Skipping commit (--no-commit)")
 
     print("\n" + "=" * 40)
     print("Sync complete!")

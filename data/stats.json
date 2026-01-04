@@ -178,6 +178,43 @@
     "2026-01-03": 15,
     "2026-01-04": 2
   },
+  "deck_reviews": [
+    {
+      "id": "1766645040578",
+      "name": "00 CodeTop",
+      "reviews": 17
+    },
+    {
+      "id": "1763966727334",
+      "name": "00 QA",
+      "reviews": 0
+    },
+    {
+      "id": "1760599190570",
+      "name": "03 Redis",
+      "reviews": 0
+    },
+    {
+      "id": "1760600537608",
+      "name": "Network",
+      "reviews": 0
+    },
+    {
+      "id": "1760519859019",
+      "name": "02 MySQL",
+      "reviews": 0
+    },
+    {
+      "id": "1752591481967",
+      "name": "01 Java::SSM",
+      "reviews": 0
+    },
+    {
+      "id": "1752591450102",
+      "name": "01 Java::JavaConcurrency",
+      "reviews": 0
+    }
+  ],
   "streak": 2,
   "weekly_reviews": 17,
   "weekly_time_minutes": 12,
@@ -2409,5 +2446,5 @@
       "week": 52
     }
   ],
-  "generated_at": "2026-01-04T23:21:29.069098"
+  "generated_at": "2026-01-04T23:52:38.639487"
 }
