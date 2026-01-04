@@ -56,15 +56,15 @@ class ReadmeGenerator:
             f"![Streak](https://img.shields.io/badge/Streak-{streak}_days-orange)"
         )
 
-        # Weekly Reviews + Weekly Time (pink)
+        # Weekly Reviews + Weekly Time (red)
         weekly_reviews = stats.get('weekly_reviews', 0)
         weekly_time = stats.get('weekly_time_minutes', 0)
         time_str = f"{weekly_time}_min"
         badges.append(
-            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-ff69b4)"
+            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-e53935)"
         )
         badges.append(
-            f"![Weekly Time](https://img.shields.io/badge/Weekly_Time-{time_str}-ff69b4)"
+            f"![Weekly Time](https://img.shields.io/badge/Weekly_Time-{time_str}-e53935)"
         )
 
         return " ".join(badges)

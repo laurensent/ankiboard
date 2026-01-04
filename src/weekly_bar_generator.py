@@ -99,14 +99,14 @@ class WeeklyBarGenerator:
             if count > 0:
                 svg_parts.append(
                     f'<text x="{x + self.BAR_WIDTH / 2}" y="{label_y}" '
-                    f'fill="{text_color}" font-size="10" text-anchor="middle" '
+                    f'fill="{text_color}" font-size="11" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
                     f'font-weight="600">{count}</text>'
                 )
             else:
                 svg_parts.append(
                     f'<text x="{x + self.BAR_WIDTH / 2}" y="{self.MAX_BAR_HEIGHT - 10}" '
-                    f'fill="{label_color}" font-size="10" text-anchor="middle" '
+                    f'fill="{label_color}" font-size="11" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                     f'0</text>'
                 )

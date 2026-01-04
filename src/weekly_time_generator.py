@@ -120,14 +120,14 @@ class WeeklyTimeGenerator:
             # Value label above point (only if > 0)
             if minutes > 0:
                 svg_parts.append(
-                    f'<text x="{x}" y="{y - 10}" fill="{text_color}" font-size="9" text-anchor="middle" '
+                    f'<text x="{x}" y="{y - 10}" fill="{text_color}" font-size="11" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
                     f'font-weight="600">{minutes}m</text>'
                 )
 
             # Date label below
             svg_parts.append(
-                f'<text x="{x}" y="{baseline_y + 15}" fill="{label_color}" font-size="9" text-anchor="middle" '
+                f'<text x="{x}" y="{baseline_y + 15}" fill="{label_color}" font-size="11" text-anchor="middle" '
                 f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                 f'{data["day"]}</text>'
             )

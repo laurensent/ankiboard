@@ -83,20 +83,20 @@ class DeckCardsGenerator:
                 color = bar_color
             bar_y = self.MAX_BAR_HEIGHT - bar_height
 
-            # Value label above bar
-            label_y = bar_y - 8
+            # Value label above bar (font-size 11 to match heatmap)
+            label_y = bar_y - 6
             if count > 0:
                 svg_parts.append(
                     f'<text x="{x + bar_width / 2}" y="{label_y}" '
-                    f'fill="{text_color}" font-size="10" text-anchor="middle" '
+                    f'fill="{text_color}" font-size="11" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
                     f'font-weight="600">{count}</text>'
                 )
             else:
                 # Show 0 in label color (less prominent)
                 svg_parts.append(
-                    f'<text x="{x + bar_width / 2}" y="{self.MAX_BAR_HEIGHT - 10}" '
-                    f'fill="{label_color}" font-size="10" text-anchor="middle" '
+                    f'<text x="{x + bar_width / 2}" y="{self.MAX_BAR_HEIGHT - 8}" '
+                    f'fill="{label_color}" font-size="11" text-anchor="middle" '
                     f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">'
                     f'0</text>'
                 )
@@ -109,22 +109,18 @@ class DeckCardsGenerator:
                 f'<title>{count} reviews - {deck["name"]}</title></rect>'
             )
 
-            # Deck name label (rotated 45 degrees)
+            # Deck name label (rotated, font-size 11 to match heatmap)
             name = deck['name']
             if '::' in name:
                 name = name.split('::')[-1]
-            # Truncate based on bar width
-            max_chars = max(5, int(bar_width / 6))
-            if len(name) > max_chars:
-                name = name[:max_chars - 2] + '..'
 
             label_x = x + bar_width / 2
-            label_y = self.MAX_BAR_HEIGHT + 12
+            label_y = self.MAX_BAR_HEIGHT + 10
             svg_parts.append(
                 f'<text x="{label_x}" y="{label_y}" '
-                f'fill="{label_color}" font-size="10" '
+                f'fill="{label_color}" font-size="11" '
                 f'font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" '
-                f'transform="rotate(45, {label_x}, {label_y})">'
+                f'transform="rotate(60, {label_x}, {label_y})">'
                 f'{name}</text>'
             )
 
