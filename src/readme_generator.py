@@ -24,55 +24,48 @@ class ReadmeGenerator:
             return json.load(f)
 
     def generate_badges(self, stats):
-        """Generate shields.io style badges"""
+        """Generate shields.io style badges - each line has one color"""
         cards = stats['cards']
         date = stats['generated_at'][:10]
 
-        badges = []
+        lines = []
 
-        # Last sync badge (shields.io uses -- for hyphen)
-        # Links to GitHub Actions page if repo_url is set
+        # Line 1: Last Sync (gray)
         date_encoded = date.replace("-", "--")
-        sync_badge = f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-blue)"
+        sync_badge = f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-lightgrey)"
         if self.repo_url:
             sync_badge = f"[{sync_badge}]({self.repo_url}/actions)"
-        badges.append(sync_badge)
+        lines.append(sync_badge)
 
-        # Total cards
+        # Line 2: Total Cards (blue)
         total_str = f"{cards['total']:,}".replace(",", "_")
-        badges.append(
-            f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-informational)"
+        lines.append(
+            f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-blue)"
         )
 
-        # Weekly reviews (green - matches bar chart)
+        # Line 3: Mastery (green)
+        total_active = cards['total'] - cards['suspended']
+        mastery_pct = int(cards['mature'] / total_active * 100) if total_active > 0 else 0
+        lines.append(
+            f"![Mastery](https://img.shields.io/badge/Mastery-{mastery_pct}%25-2ea043)"
+        )
+
+        # Line 4: Streak (orange)
+        streak = stats['streak']
+        lines.append(
+            f"![Streak](https://img.shields.io/badge/Streak-{streak}_days-orange)"
+        )
+
+        # Line 5: Weekly Reviews + Weekly Time (purple - same line, same color)
         weekly_reviews = stats.get('weekly_reviews', 0)
-        badges.append(
-            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-2ea043)"
-        )
-
-        # Weekly time (purple - matches time chart)
         weekly_time = stats.get('weekly_time_minutes', 0)
         time_str = f"{weekly_time}_min"
-        badges.append(
+        lines.append(
+            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-8250df) "
             f"![Weekly Time](https://img.shields.io/badge/Weekly_Time-{time_str}-8250df)"
         )
 
-        # Streak (use blue tones to differentiate from mastery)
-        streak = stats['streak']
-        streak_color = "blue" if streak >= 7 else ("9cf" if streak >= 3 else "orange")
-        badges.append(
-            f"![Streak](https://img.shields.io/badge/Streak-{streak}_days-{streak_color})"
-        )
-
-        # Mastery percentage
-        total_active = cards['total'] - cards['suspended']
-        mastery_pct = int(cards['mature'] / total_active * 100) if total_active > 0 else 0
-        mastery_color = "brightgreen" if mastery_pct >= 80 else ("green" if mastery_pct >= 50 else "yellow")
-        badges.append(
-            f"![Mastery](https://img.shields.io/badge/Mastery-{mastery_pct}%25-{mastery_color})"
-        )
-
-        return " ".join(badges)
+        return "\n\n".join(lines)
 
     def generate_readme(self):
         """Generate full README.md content"""
