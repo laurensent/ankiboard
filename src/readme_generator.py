@@ -24,48 +24,50 @@ class ReadmeGenerator:
             return json.load(f)
 
     def generate_badges(self, stats):
-        """Generate shields.io style badges - each line has one color"""
+        """Generate shields.io style badges - all on one line, each type has distinct color"""
         cards = stats['cards']
         date = stats['generated_at'][:10]
 
-        lines = []
+        badges = []
 
-        # Line 1: Last Sync (gray)
+        # Last Sync (blue)
         date_encoded = date.replace("-", "--")
-        sync_badge = f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-lightgrey)"
+        sync_badge = f"![Last Sync](https://img.shields.io/badge/Last_Sync-{date_encoded}-blue)"
         if self.repo_url:
             sync_badge = f"[{sync_badge}]({self.repo_url}/actions)"
-        lines.append(sync_badge)
+        badges.append(sync_badge)
 
-        # Line 2: Total Cards (blue)
+        # Total Cards (blueviolet)
         total_str = f"{cards['total']:,}".replace(",", "_")
-        lines.append(
-            f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-blue)"
+        badges.append(
+            f"![Total Cards](https://img.shields.io/badge/Total_Cards-{total_str}-blueviolet)"
         )
 
-        # Line 3: Mastery (green)
+        # Mastery (green)
         total_active = cards['total'] - cards['suspended']
         mastery_pct = int(cards['mature'] / total_active * 100) if total_active > 0 else 0
-        lines.append(
+        badges.append(
             f"![Mastery](https://img.shields.io/badge/Mastery-{mastery_pct}%25-2ea043)"
         )
 
-        # Line 4: Streak (orange)
+        # Streak (orange)
         streak = stats['streak']
-        lines.append(
+        badges.append(
             f"![Streak](https://img.shields.io/badge/Streak-{streak}_days-orange)"
         )
 
-        # Line 5: Weekly Reviews + Weekly Time (purple - same line, same color)
+        # Weekly Reviews + Weekly Time (pink)
         weekly_reviews = stats.get('weekly_reviews', 0)
         weekly_time = stats.get('weekly_time_minutes', 0)
         time_str = f"{weekly_time}_min"
-        lines.append(
-            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-8250df) "
-            f"![Weekly Time](https://img.shields.io/badge/Weekly_Time-{time_str}-8250df)"
+        badges.append(
+            f"![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-{weekly_reviews}-ff69b4)"
+        )
+        badges.append(
+            f"![Weekly Time](https://img.shields.io/badge/Weekly_Time-{time_str}-ff69b4)"
         )
 
-        return "\n\n".join(lines)
+        return " ".join(badges)
 
     def generate_readme(self):
         """Generate full README.md content"""
