@@ -1,9 +1,9 @@
 {
   "cards": {
     "total": 2478,
-    "new": 2420,
-    "learning": 16,
-    "mature": 42,
+    "new": 2418,
+    "learning": 17,
+    "mature": 43,
     "suspended": 0
   },
   "decks": {
@@ -155,8 +155,8 @@
       "name": "00 CodeTop",
       "id": "1766645040578",
       "total": 1140,
-      "new": 1130,
-      "mature": 10
+      "new": 1128,
+      "mature": 11
     }
   },
   "daily_reviews": {
@@ -175,11 +175,12 @@
     "2025-11-03": 38,
     "2025-11-08": 9,
     "2025-12-08": 35,
-    "2026-01-03": 15
+    "2026-01-03": 15,
+    "2026-01-04": 2
   },
-  "streak": 1,
-  "weekly_reviews": 15,
-  "weekly_time_minutes": 10,
+  "streak": 2,
+  "weekly_reviews": 17,
+  "weekly_time_minutes": 12,
   "heatmap_data": [
     {
       "date": "2024-12-30",
@@ -2400,7 +2401,13 @@
       "count": 15,
       "weekday": 5,
       "week": 52
+    },
+    {
+      "date": "2026-01-04",
+      "count": 2,
+      "weekday": 6,
+      "week": 52
     }
   ],
-  "generated_at": "2026-01-03T22:00:00.087249"
+  "generated_at": "2026-01-04T23:21:29.069098"
 }

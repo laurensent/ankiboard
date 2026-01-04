@@ -1,6 +1,6 @@
 # Anki Statistics
 
-![Last Sync](https://img.shields.io/badge/Last_Sync-2026--01--03-blue) ![Total Cards](https://img.shields.io/badge/Total_Cards-2_478-informational) ![Streak](https://img.shields.io/badge/Streak-1_days-yellow) ![Mastery](https://img.shields.io/badge/Mastery-1%25-yellow)
+![Last Sync](https://img.shields.io/badge/Last_Sync-2026--01--04-blue) ![Total Cards](https://img.shields.io/badge/Total_Cards-2_478-informational) ![Streak](https://img.shields.io/badge/Streak-2_days-yellow) ![Mastery](https://img.shields.io/badge/Mastery-1%25-yellow)
 
 ## Review Activity
 
