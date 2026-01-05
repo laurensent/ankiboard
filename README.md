@@ -24,6 +24,8 @@ Track your Anki learning progress. [Live Demo](https://laurensent.github.io/anki
 | `--no-push` | Commit but don't push |
 | `-q, --quiet` | Compact output for notifications |
 
+Set `ANKI_DB_PATH` environment variable to override the default database path.
+
 ## Setup
 
 1. Clone this repository

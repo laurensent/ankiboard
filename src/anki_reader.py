@@ -1,6 +1,8 @@
 """
 Anki Database Reader - Read-only access to Anki SQLite database
 """
+import os
+import sys
 import sqlite3
 import json
 from pathlib import Path
@@ -8,9 +10,36 @@ from datetime import datetime, timedelta
 from urllib.parse import quote
 
 
+def get_anki_base_path():
+    """Get the Anki base directory for the current platform"""
+    if sys.platform == 'darwin':
+        return Path.home() / "Library" / "Application Support" / "Anki2"
+    elif sys.platform == 'win32':
+        return Path(os.environ.get('APPDATA', '')) / "Anki2"
+    else:  # Linux and others
+        return Path.home() / ".local" / "share" / "Anki2"
+
+
 def get_default_anki_db_path():
-    """Get the default Anki database path for macOS"""
-    anki_base = Path.home() / "Library" / "Application Support" / "Anki2"
+    """Get the default Anki database path
+
+    Priority:
+    1. ANKI_DB_PATH environment variable
+    2. Auto-detect based on platform
+    """
+    # Check environment variable first
+    env_path = os.environ.get('ANKI_DB_PATH')
+    if env_path:
+        path = Path(env_path)
+        if path.exists():
+            return str(path)
+        raise FileNotFoundError(f"ANKI_DB_PATH not found: {env_path}")
+
+    # Auto-detect based on platform
+    anki_base = get_anki_base_path()
+
+    if not anki_base.exists():
+        raise FileNotFoundError(f"Anki directory not found: {anki_base}")
 
     # Find profiles
     profiles = [d for d in anki_base.iterdir()
