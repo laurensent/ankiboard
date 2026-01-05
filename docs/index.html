@@ -242,6 +242,7 @@
       const active = stats.cards.total - stats.cards.suspended;
       const mastery = active > 0 ? Math.round(stats.cards.mature / active * 100) : 0;
       document.getElementById('badges').innerHTML = `
+        <a href="https://github.com/laurensent/ankiboard/actions/workflows/pages.yml"><img src="https://github.com/laurensent/ankiboard/actions/workflows/pages.yml/badge.svg"></a>
         <img src="https://img.shields.io/badge/Last_Sync-${date}-blue">
         <img src="https://img.shields.io/badge/Total_Cards-${total}-blueviolet">
         <img src="https://img.shields.io/badge/Mastery-${mastery}%25-2ea043">
