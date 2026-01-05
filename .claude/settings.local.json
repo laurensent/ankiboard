@@ -16,7 +16,16 @@
       "Bash(head:*)",
       "Bash(tree:*)",
       "Bash(git reset:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(gh run list:*)",
+      "Bash(xargs:*)",
+      "Bash(git remote get-url:*)",
+      "Bash(git restore:*)",
+      "Bash(gh repo edit:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh repo rename:*)",
+      "Bash(git remote:*)"
     ]
   }
 }

@@ -1,1 +1,1 @@
-# Anki Stats Sync
+# Ankiboard

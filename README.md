@@ -1,40 +1,57 @@
-# Anki Statistics
+# Ankiboard
 
-![Last Sync](https://img.shields.io/badge/Last_Sync-2026--01--05-blue) ![Total Cards](https://img.shields.io/badge/Total_Cards-2_479-blueviolet) ![Mastery](https://img.shields.io/badge/Mastery-1%25-2ea043) ![Streak](https://img.shields.io/badge/Streak-2_days-orange) ![Weekly Reviews](https://img.shields.io/badge/Weekly_Reviews-17-e53935) ![Weekly Time](https://img.shields.io/badge/Weekly_Time-12_min-e53935)
+Anki statistics dashboard with beautiful visualizations.
 
-## Review Activity
+## Features
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="output/heatmap-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="output/heatmap.svg">
-  <img alt="Review Heatmap" src="output/heatmap.svg">
-</picture>
+- Review activity heatmap (GitHub contribution style)
+- Weekly reviews and time charts
+- Monthly deck ranking
+- All decks progress visualization
+- Auto-generated badges
+- Light/Dark theme support
 
-## This Week
+## Live Dashboard
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="output/weekly-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="output/weekly.svg">
-  <img alt="Daily Reviews" src="output/weekly.svg">
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="output/time-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="output/time.svg">
-  <img alt="Daily Time" src="output/time.svg">
-</picture>
+[https://laurensent.github.io/ankiboard/](https://laurensent.github.io/ankiboard/)
 
-## This Month
+## Usage
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="output/cards-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="output/cards.svg">
-  <img alt="Top Decks by Cards" src="output/cards.svg">
-</picture>
+```bash
+# Run sync (export + commit + push)
+./run_sync.sh
 
-## All Decks
+# Export only, no commit
+./run_sync.sh --no-commit
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="output/decks-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="output/decks.svg">
-  <img alt="Deck Progress" src="output/decks.svg">
-</picture>
+# Quiet mode (for automation)
+./run_sync.sh -q
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--no-commit` | Export data only, don't commit |
+| `--no-push` | Commit but don't push |
+| `-q, --quiet` | Compact output for notifications |
+| `-d, --db PATH` | Use specific Anki database path |
+
+### Keyboard Maestro Integration
+
+1. Create a new macro
+2. Add "Execute Shell Script" action
+3. Script: `~/path/to/ankiboard/run_sync.sh`
+4. Output: "Display results in a notification"
+
+## Setup
+
+1. Clone this repository
+2. Run `./run_sync.sh` (requires Anki to be closed)
+3. Enable GitHub Pages: Settings > Pages > Source: `docs/`
+
+## Notes
+
+- Opens Anki database in **read-only mode**
+- Close Anki before running sync to avoid database lock
+- Supports both light and dark themes

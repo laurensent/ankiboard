@@ -1,2 +1,2 @@
-# Anki Stats Sync Dependencies
+# Ankiboard Dependencies
 # No external dependencies required - uses Python standard library only

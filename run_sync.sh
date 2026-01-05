@@ -1,5 +1,5 @@
 #!/bin/bash
-# Anki Stats Sync - Local execution script
+# Ankiboard - Local execution script
 
 # Set project path (override if needed for automation tools)
 ANKI_SYNC_DIR="${ANKI_SYNC_DIR:-}"

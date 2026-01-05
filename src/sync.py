@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Anki Stats Sync - Main synchronization script
+Ankiboard - Main synchronization script
 
 Usage:
     python sync.py              # Run sync with default settings
@@ -8,7 +8,7 @@ Usage:
     python sync.py --db /path   # Use specific database path
 """
 import argparse
-import os
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -18,12 +18,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from data_exporter import DataExporter
-from heatmap_generator import HeatmapGenerator
-from deck_svg_generator import DeckSvgGenerator
-from weekly_bar_generator import WeeklyBarGenerator
-from weekly_time_generator import WeeklyTimeGenerator
-from deck_cards_generator import DeckCardsGenerator
-from readme_generator import ReadmeGenerator
 
 
 def run_git_command(args, cwd=None):
@@ -40,24 +34,24 @@ def run_git_command(args, cwd=None):
         return False, "", "Git not found"
 
 
-def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=None, quiet=False):
+def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False):
     """Main sync function"""
     if repo_root is None:
         repo_root = Path(__file__).parent.parent
 
     repo_root = Path(repo_root)
     data_dir = repo_root / "data"
-    output_dir = repo_root / "output"
+    docs_dir = repo_root / "docs"
 
     def log(msg):
         if not quiet:
             print(msg)
 
-    log("Anki Stats Sync")
+    log("Ankiboard")
     log("=" * 40)
 
     # Step 1: Export data from Anki
-    log("\n[1/8] Exporting statistics...")
+    log("\n[1/2] Exporting statistics...")
     try:
         exporter = DataExporter(data_dir)
         stats = exporter.export_all(db_path)
@@ -74,48 +68,17 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
             print(f"Error: {e}")
         return False
 
-    # Step 2: Generate heatmap
-    log("\n[2/8] Generating heatmap...")
-    generator = HeatmapGenerator(output_dir)
-    light_file, dark_file = generator.generate_from_data(stats['heatmap_data'])
-    log(f"  - Generated: {light_file.name}, {dark_file.name}")
+    # Copy stats.json to docs/ for GitHub Pages
+    if docs_dir.exists():
+        shutil.copy(data_dir / "stats.json", docs_dir / "stats.json")
+        log(f"  - Updated: docs/stats.json")
 
-    # Step 3: Generate deck progress SVG
-    log("\n[3/8] Generating deck visualization...")
-    deck_gen = DeckSvgGenerator(output_dir)
-    deck_light, deck_dark = deck_gen.generate_all(stats['decks'])
-    log(f"  - Generated: {deck_light.name}, {deck_dark.name}")
-
-    # Step 4: Generate weekly bar chart
-    log("\n[4/8] Generating weekly bar chart...")
-    weekly_gen = WeeklyBarGenerator(output_dir)
-    weekly_light, weekly_dark = weekly_gen.generate_from_data(stats['daily_reviews'])
-    log(f"  - Generated: {weekly_light.name}, {weekly_dark.name}")
-
-    # Step 5: Generate weekly time chart
-    log("\n[5/8] Generating weekly time chart...")
-    time_gen = WeeklyTimeGenerator(output_dir)
-    time_light, time_dark = time_gen.generate_from_data(stats['daily_time'])
-    log(f"  - Generated: {time_light.name}, {time_dark.name}")
-
-    # Step 6: Generate monthly deck reviews ranking
-    log("\n[6/8] Generating monthly deck reviews...")
-    cards_gen = DeckCardsGenerator(output_dir)
-    cards_light, cards_dark = cards_gen.generate_all(stats['monthly_deck_reviews'])
-    log(f"  - Generated: {cards_light.name}, {cards_dark.name}")
-
-    # Step 7: Generate README
-    log("\n[7/8] Generating README...")
-    readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root, repo_url=repo_url, stats=stats)
-    readme_path = readme_gen.write_readme()
-    log(f"  - Generated: {readme_path.name}")
-
-    # Step 8: Commit changes (optional)
+    # Step 2: Commit changes (optional)
     committed = False
     pushed = False
 
     if commit:
-        log("\n[8/8] Committing changes...")
+        log("\n[2/2] Committing changes...")
 
         # Check if in git repo
         success, _, _ = run_git_command(['status'], cwd=repo_root)
@@ -127,17 +90,7 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
                 "data/stats.json",
                 "data/history.json",
                 "data/heatmap.json",
-                "output/heatmap.svg",
-                "output/heatmap-dark.svg",
-                "output/decks.svg",
-                "output/decks-dark.svg",
-                "output/weekly.svg",
-                "output/weekly-dark.svg",
-                "output/time.svg",
-                "output/time-dark.svg",
-                "output/cards.svg",
-                "output/cards-dark.svg",
-                "README.md"
+                "docs/stats.json"
             ]
 
             for f in files_to_stage:
@@ -173,7 +126,7 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
                 else:
                     log(f"  - Push failed: {stderr}")
     else:
-        log("\n[8/8] Skipping commit (--no-commit)")
+        log("\n[2/2] Skipping commit (--no-commit)")
 
     log("\n" + "=" * 40)
     log("Sync complete!")
@@ -189,7 +142,7 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
         if committed:
             status = "Pushed" if pushed else "Committed"
 
-        print(f"Anki {status}")
+        print(f"Ankiboard {status}")
         print(f"{cards:,} cards | {reviews} reviews | {streak} days | {time_min}min")
 
     return True
@@ -197,7 +150,7 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Sync Anki statistics to GitHub repository'
+        description='Sync Anki statistics to GitHub Pages'
     )
     parser.add_argument(
         '--db', '-d',
@@ -220,11 +173,6 @@ def main():
         default=None
     )
     parser.add_argument(
-        '--repo-url',
-        help='GitHub repository URL (e.g., https://github.com/user/repo)',
-        default=None
-    )
-    parser.add_argument(
         '-q', '--quiet',
         action='store_true',
         help='Compact output for notifications (Keyboard Maestro, etc.)'
@@ -237,7 +185,6 @@ def main():
         commit=not args.no_commit,
         push=not args.no_push,
         repo_root=args.repo,
-        repo_url=args.repo_url,
         quiet=args.quiet
     )
 
