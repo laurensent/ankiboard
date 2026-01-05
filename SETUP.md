@@ -13,14 +13,24 @@
 
 # Commit but don't push
 ./run_sync.sh --no-push
+
+# Quiet mode (compact output for notifications)
+./run_sync.sh -q
 ```
 
-### Automation
+### Keyboard Maestro Integration
 
-Use your preferred automation tool (cron, Keyboard Maestro, etc.) to call:
+The script auto-detects non-terminal environments and uses quiet mode automatically.
 
-```bash
-/path/to/anki-stats-sync/run_sync.sh
+1. Create a new macro in Keyboard Maestro
+2. Add action: "Execute Shell Script" or "Execute script file"
+3. Script path: `~/Workspace/VSCodeProjects/anki-stats-sync/run_sync.sh`
+4. Output: "Display results in a notification"
+
+Notification output example:
+```
+Anki Pushed
+2,479 cards | 17 reviews | 2 days | 12min
 ```
 
 ## GitHub Repository Setup
@@ -37,7 +47,21 @@ Use your preferred automation tool (cron, Keyboard Maestro, etc.) to call:
    git push -u origin main
    ```
 
-3. The GitHub Action will automatically regenerate the display when data is pushed
+3. GitHub Actions is disabled (local generation is used instead)
+
+## GitHub Actions Management
+
+GitHub Actions is disabled by default since all generation happens locally.
+
+### Delete old workflow runs
+
+```bash
+gh run list --limit 100 --json databaseId -q '.[].databaseId' | xargs -I {} gh run delete {}
+```
+
+### Re-enable Actions (if needed)
+
+Edit `.github/workflows/sync.yml` and remove the `if: false` line.
 
 ## File Structure
 
@@ -48,20 +72,46 @@ anki-stats-sync/
 │   ├── history.json      # Historical data
 │   └── heatmap.json      # Heatmap data
 ├── output/
-│   ├── heatmap.svg       # Light theme heatmap
-│   ├── heatmap-dark.svg  # Dark theme heatmap
-│   ├── decks.svg         # Light theme deck progress
-│   └── decks-dark.svg    # Dark theme deck progress
+│   ├── heatmap.svg       # Review heatmap (light)
+│   ├── heatmap-dark.svg  # Review heatmap (dark)
+│   ├── decks.svg         # All decks progress (light)
+│   ├── decks-dark.svg    # All decks progress (dark)
+│   ├── weekly.svg        # Weekly reviews chart (light)
+│   ├── weekly-dark.svg   # Weekly reviews chart (dark)
+│   ├── time.svg          # Weekly time chart (light)
+│   ├── time-dark.svg     # Weekly time chart (dark)
+│   ├── cards.svg         # Monthly deck ranking (light)
+│   └── cards-dark.svg    # Monthly deck ranking (dark)
 ├── src/
 │   ├── anki_reader.py       # Read-only Anki DB access
 │   ├── stats_calculator.py  # Calculate statistics
 │   ├── data_exporter.py     # Export to JSON
 │   ├── heatmap_generator.py # Generate heatmap SVG
-│   ├── deck_svg_generator.py # Generate deck progress SVG
-│   ├── readme_generator.py  # Generate README
-│   └── sync.py              # Main sync script
-├── README.md                # Auto-generated stats display
-└── run_sync.sh              # Convenience script
+│   ├── deck_svg_generator.py    # Generate deck progress SVG
+│   ├── weekly_bar_generator.py  # Generate weekly reviews SVG
+│   ├── weekly_time_generator.py # Generate weekly time SVG
+│   ├── deck_cards_generator.py  # Generate monthly ranking SVG
+│   ├── readme_generator.py      # Generate README with badges
+│   └── sync.py                  # Main sync script
+├── .github/workflows/
+│   └── sync.yml          # GitHub Actions (disabled)
+├── README.md             # Auto-generated stats display
+├── SETUP.md              # This file
+└── run_sync.sh           # Main entry script
+```
+
+## Command Line Options
+
+```
+./run_sync.sh [options]
+
+Options:
+  --no-commit    Export data only, don't commit
+  --no-push      Commit but don't push to remote
+  -q, --quiet    Compact output for notifications
+  -d, --db PATH  Use specific Anki database path
+  -r, --repo DIR Repository root directory
+  --repo-url URL GitHub repository URL for badge links
 ```
 
 ## Notes
@@ -69,3 +119,5 @@ anki-stats-sync/
 - The script opens Anki database in **read-only mode** (no modifications)
 - Make sure Anki is closed when running sync (to avoid database lock)
 - Stats are based on your default Anki profile
+- All decks with cards are displayed (no limit)
+- Supports both light and dark themes via `<picture>` tags
