@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   regenerate:
+    if: false  # Disabled - using local generation instead
     runs-on: ubuntu-latest
 
     steps:
