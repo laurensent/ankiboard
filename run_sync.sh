@@ -11,5 +11,11 @@ fi
 
 cd "$ANKI_SYNC_DIR"
 
+# Auto quiet mode when not in terminal (e.g., Keyboard Maestro)
+QUIET_FLAG=""
+if [ ! -t 1 ]; then
+    QUIET_FLAG="-q"
+fi
+
 # Run sync
-python3 src/sync.py "$@"
+python3 src/sync.py $QUIET_FLAG "$@"

@@ -8,14 +8,18 @@ from pathlib import Path
 class ReadmeGenerator:
     """Generate README.md with statistics and heatmap"""
 
-    def __init__(self, data_dir="data", output_dir="output", repo_root=".", repo_url=None):
+    def __init__(self, data_dir="data", output_dir="output", repo_root=".", repo_url=None, stats=None):
         self.data_dir = Path(data_dir)
         self.output_dir = Path(output_dir)
         self.repo_root = Path(repo_root)
         self.repo_url = repo_url
+        self._stats = stats  # Optional: use provided stats instead of loading from file
 
     def load_stats(self):
-        """Load stats from JSON file"""
+        """Load stats from memory or JSON file"""
+        if self._stats is not None:
+            return self._stats
+
         stats_file = self.data_dir / "stats.json"
         if not stats_file.exists():
             raise FileNotFoundError(f"Stats file not found: {stats_file}")

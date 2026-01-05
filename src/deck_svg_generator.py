@@ -11,13 +11,23 @@ class DeckSvgGenerator:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def generate_svg(self, decks_data, dark_mode=False, max_decks=10):
-        """Generate SVG with deck progress bars (gradient style)"""
+    def generate_svg(self, decks_data, dark_mode=False, max_decks=None):
+        """Generate SVG with deck progress bars (gradient style)
+
+        Args:
+            decks_data: Dict of deck data
+            dark_mode: Use dark theme
+            max_decks: Maximum number of decks to show (None = show all with cards)
+        """
+        # Filter decks that have cards (total > 0)
+        decks_with_cards = [d for d in decks_data.values() if d.get('total', 0) > 0]
         sorted_decks = sorted(
-            decks_data.values(),
+            decks_with_cards,
             key=lambda d: d.get('total', 0),
             reverse=True
-        )[:max_decks]
+        )
+        if max_decks:
+            sorted_decks = sorted_decks[:max_decks]
 
         if not sorted_decks:
             return ""
@@ -100,7 +110,7 @@ class DeckSvgGenerator:
         svg_parts.append('</svg>')
         return '\n'.join(svg_parts)
 
-    def generate_all(self, decks_data, max_decks=10):
+    def generate_all(self, decks_data, max_decks=None):
         """Generate both light and dark versions"""
         light_svg = self.generate_svg(decks_data, dark_mode=False, max_decks=max_decks)
         dark_svg = self.generate_svg(decks_data, dark_mode=True, max_decks=max_decks)

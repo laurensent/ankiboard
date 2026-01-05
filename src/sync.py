@@ -40,7 +40,7 @@ def run_git_command(args, cwd=None):
         return False, "", "Git not found"
 
 
-def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=None):
+def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=None, quiet=False):
     """Main sync function"""
     if repo_root is None:
         repo_root = Path(__file__).parent.parent
@@ -49,128 +49,149 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, repo_url=No
     data_dir = repo_root / "data"
     output_dir = repo_root / "output"
 
-    print("Anki Stats Sync")
-    print("=" * 40)
+    def log(msg):
+        if not quiet:
+            print(msg)
+
+    log("Anki Stats Sync")
+    log("=" * 40)
 
     # Step 1: Export data from Anki
-    print("\n[1/8] Exporting statistics...")
+    log("\n[1/8] Exporting statistics...")
     try:
         exporter = DataExporter(data_dir)
         stats = exporter.export_all(db_path)
-        print(f"  - Total cards: {stats['cards']['total']:,}")
-        print(f"  - Current streak: {stats['streak']} days")
-        print(f"  - Weekly reviews: {stats['weekly_reviews']:,}")
+        log(f"  - Total cards: {stats['cards']['total']:,}")
+        log(f"  - Current streak: {stats['streak']} days")
+        log(f"  - Weekly reviews: {stats['weekly_reviews']:,}")
     except FileNotFoundError as e:
-        print(f"  Error: {e}")
-        print("  Make sure Anki is installed and you have a profile")
+        print(f"Error: {e}")
         return False
     except sqlite3.OperationalError as e:
         if "locked" in str(e):
-            print("  Error: Database is locked")
-            print("  Please close Anki before running sync")
+            print("Error: Database locked, close Anki first")
         else:
-            print(f"  Database error: {e}")
+            print(f"Error: {e}")
         return False
 
     # Step 2: Generate heatmap
-    print("\n[2/8] Generating heatmap...")
+    log("\n[2/8] Generating heatmap...")
     generator = HeatmapGenerator(output_dir)
     light_file, dark_file = generator.generate_from_data(stats['heatmap_data'])
-    print(f"  - Generated: {light_file.name}, {dark_file.name}")
+    log(f"  - Generated: {light_file.name}, {dark_file.name}")
 
     # Step 3: Generate deck progress SVG
-    print("\n[3/8] Generating deck visualization...")
+    log("\n[3/8] Generating deck visualization...")
     deck_gen = DeckSvgGenerator(output_dir)
     deck_light, deck_dark = deck_gen.generate_all(stats['decks'])
-    print(f"  - Generated: {deck_light.name}, {deck_dark.name}")
+    log(f"  - Generated: {deck_light.name}, {deck_dark.name}")
 
     # Step 4: Generate weekly bar chart
-    print("\n[4/8] Generating weekly bar chart...")
+    log("\n[4/8] Generating weekly bar chart...")
     weekly_gen = WeeklyBarGenerator(output_dir)
     weekly_light, weekly_dark = weekly_gen.generate_from_data(stats['daily_reviews'])
-    print(f"  - Generated: {weekly_light.name}, {weekly_dark.name}")
+    log(f"  - Generated: {weekly_light.name}, {weekly_dark.name}")
 
     # Step 5: Generate weekly time chart
-    print("\n[5/8] Generating weekly time chart...")
+    log("\n[5/8] Generating weekly time chart...")
     time_gen = WeeklyTimeGenerator(output_dir)
     time_light, time_dark = time_gen.generate_from_data(stats['daily_time'])
-    print(f"  - Generated: {time_light.name}, {time_dark.name}")
+    log(f"  - Generated: {time_light.name}, {time_dark.name}")
 
     # Step 6: Generate monthly deck reviews ranking
-    print("\n[6/8] Generating monthly deck reviews...")
+    log("\n[6/8] Generating monthly deck reviews...")
     cards_gen = DeckCardsGenerator(output_dir)
     cards_light, cards_dark = cards_gen.generate_all(stats['monthly_deck_reviews'])
-    print(f"  - Generated: {cards_light.name}, {cards_dark.name}")
+    log(f"  - Generated: {cards_light.name}, {cards_dark.name}")
 
     # Step 7: Generate README
-    print("\n[7/8] Generating README...")
-    readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root, repo_url=repo_url)
+    log("\n[7/8] Generating README...")
+    readme_gen = ReadmeGenerator(data_dir, output_dir, repo_root, repo_url=repo_url, stats=stats)
     readme_path = readme_gen.write_readme()
-    print(f"  - Generated: {readme_path.name}")
+    log(f"  - Generated: {readme_path.name}")
 
     # Step 8: Commit changes (optional)
+    committed = False
+    pushed = False
+
     if commit:
-        print("\n[8/8] Committing changes...")
+        log("\n[8/8] Committing changes...")
 
         # Check if in git repo
         success, _, _ = run_git_command(['status'], cwd=repo_root)
         if not success:
-            print("  - Not a git repository, skipping commit")
-            return True
-
-        # Stage files
-        files_to_stage = [
-            "data/stats.json",
-            "data/history.json",
-            "data/heatmap.json",
-            "output/heatmap.svg",
-            "output/heatmap-dark.svg",
-            "output/decks.svg",
-            "output/decks-dark.svg",
-            "output/weekly.svg",
-            "output/weekly-dark.svg",
-            "output/time.svg",
-            "output/time-dark.svg",
-            "output/cards.svg",
-            "output/cards-dark.svg",
-            "README.md"
-        ]
-
-        for f in files_to_stage:
-            run_git_command(['add', f], cwd=repo_root)
-
-        # Check if there are changes
-        success, stdout, _ = run_git_command(['diff', '--cached', '--quiet'], cwd=repo_root)
-        if success:
-            print("  - No changes to commit")
+            log("  - Not a git repository, skipping commit")
         else:
-            # Commit
-            date_str = stats['generated_at'][:10]
-            commit_msg = f"chore: sync anki stats ({date_str})"
+            # Stage files
+            files_to_stage = [
+                "data/stats.json",
+                "data/history.json",
+                "data/heatmap.json",
+                "output/heatmap.svg",
+                "output/heatmap-dark.svg",
+                "output/decks.svg",
+                "output/decks-dark.svg",
+                "output/weekly.svg",
+                "output/weekly-dark.svg",
+                "output/time.svg",
+                "output/time-dark.svg",
+                "output/cards.svg",
+                "output/cards-dark.svg",
+                "README.md"
+            ]
 
-            success, _, stderr = run_git_command(
-                ['commit', '-m', commit_msg],
-                cwd=repo_root
-            )
+            for f in files_to_stage:
+                run_git_command(['add', f], cwd=repo_root)
 
+            # Check if there are changes
+            success, stdout, _ = run_git_command(['diff', '--cached', '--quiet'], cwd=repo_root)
             if success:
-                print(f"  - Committed: {commit_msg}")
+                log("  - No changes to commit")
             else:
-                print(f"  - Commit failed: {stderr}")
+                # Commit
+                date_str = stats['generated_at'][:10]
+                commit_msg = f"chore: sync anki stats ({date_str})"
 
-        # Push (optional)
-        if push:
-            print("\n  Pushing to remote...")
-            success, _, stderr = run_git_command(['push'], cwd=repo_root)
-            if success:
-                print("  - Pushed successfully")
-            else:
-                print(f"  - Push failed: {stderr}")
+                success, _, stderr = run_git_command(
+                    ['commit', '-m', commit_msg],
+                    cwd=repo_root
+                )
+
+                if success:
+                    committed = True
+                    log(f"  - Committed: {commit_msg}")
+                else:
+                    log(f"  - Commit failed: {stderr}")
+
+            # Push (optional)
+            if push:
+                log("\n  Pushing to remote...")
+                success, _, stderr = run_git_command(['push'], cwd=repo_root)
+                if success:
+                    pushed = True
+                    log("  - Pushed successfully")
+                else:
+                    log(f"  - Push failed: {stderr}")
     else:
-        print("\n[8/8] Skipping commit (--no-commit)")
+        log("\n[8/8] Skipping commit (--no-commit)")
 
-    print("\n" + "=" * 40)
-    print("Sync complete!")
+    log("\n" + "=" * 40)
+    log("Sync complete!")
+
+    # Quiet mode: compact output for notifications
+    if quiet:
+        cards = stats['cards']['total']
+        reviews = stats['weekly_reviews']
+        streak = stats['streak']
+        time_min = stats.get('weekly_time_minutes', 0)
+
+        status = "Synced"
+        if committed:
+            status = "Pushed" if pushed else "Committed"
+
+        print(f"Anki {status}")
+        print(f"{cards:,} cards | {reviews} reviews | {streak} days | {time_min}min")
+
     return True
 
 
@@ -203,6 +224,11 @@ def main():
         help='GitHub repository URL (e.g., https://github.com/user/repo)',
         default=None
     )
+    parser.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        help='Compact output for notifications (Keyboard Maestro, etc.)'
+    )
 
     args = parser.parse_args()
 
@@ -211,7 +237,8 @@ def main():
         commit=not args.no_commit,
         push=not args.no_push,
         repo_root=args.repo,
-        repo_url=args.repo_url
+        repo_url=args.repo_url,
+        quiet=args.quiet
     )
 
     sys.exit(0 if success else 1)
