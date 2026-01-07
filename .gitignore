@@ -26,3 +26,7 @@ temp/
 
 # Local notes
 TODO.md
+
+# Claude
+.claude/
+CLAUDE.md

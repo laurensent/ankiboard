@@ -6,18 +6,45 @@ Usage:
     python sync.py              # Run sync with default settings
     python sync.py --no-commit  # Export only, don't commit
     python sync.py --db /path   # Use specific database path
+    python sync.py --force      # Force sync even if no changes
 """
 import argparse
+import json
 import shutil
 import sqlite3
 import subprocess
 import sys
 from pathlib import Path
 
+from anki_reader import get_default_anki_db_path
+
 # Add src directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
 from data_exporter import DataExporter
+
+
+def load_existing_stats(data_dir):
+    """Load existing stats.json if it exists"""
+    stats_file = Path(data_dir) / "stats.json"
+    if stats_file.exists():
+        with open(stats_file, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return None
+
+
+def stats_changed(old_stats, new_stats):
+    """Check if stats have meaningful changes (ignore generated_at timestamp)"""
+    if old_stats is None:
+        return True
+
+    # Compare key fields that indicate actual data changes
+    keys_to_compare = ['cards', 'streak', 'weekly_reviews', 'weekly_time_minutes']
+    for key in keys_to_compare:
+        if old_stats.get(key) != new_stats.get(key):
+            return True
+
+    return False
 
 
 def run_git_command(args, cwd=None):
@@ -34,7 +61,7 @@ def run_git_command(args, cwd=None):
         return False, "", "Git not found"
 
 
-def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False):
+def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False, force=False):
     """Main sync function"""
     if repo_root is None:
         repo_root = Path(__file__).parent.parent
@@ -47,17 +74,15 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False
         if not quiet:
             print(msg)
 
-    log("Ankiboard")
-    log("=" * 40)
+    # Resolve database path
+    if db_path is None:
+        db_path = get_default_anki_db_path()
 
-    # Step 1: Export data from Anki
-    log("\n[1/2] Exporting statistics...")
+    # Step 1: Calculate statistics from Anki
     try:
-        exporter = DataExporter(data_dir)
-        stats = exporter.export_all(db_path)
-        log(f"  - Total cards: {stats['cards']['total']:,}")
-        log(f"  - Current streak: {stats['streak']} days")
-        log(f"  - Weekly reviews: {stats['weekly_reviews']:,}")
+        from stats_calculator import StatsCalculator
+        calc = StatsCalculator(db_path)
+        stats = calc.get_all_stats()
     except FileNotFoundError as e:
         print(f"Error: {e}")
         return False
@@ -67,6 +92,25 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False
         else:
             print(f"Error: {e}")
         return False
+
+    # Check if stats have actually changed
+    old_stats = load_existing_stats(data_dir)
+    if not force and not stats_changed(old_stats, stats):
+        print("Ankiboard: No changes")
+        return True
+
+    log("Ankiboard")
+    log("=" * 40)
+
+    # Export stats to files
+    log("\n[1/2] Exporting statistics...")
+    exporter = DataExporter(data_dir)
+    exporter.export_stats(stats)
+    exporter.export_history(stats)
+    exporter.export_heatmap_data(stats)
+    log(f"  - Total cards: {stats['cards']['total']:,}")
+    log(f"  - Current streak: {stats['streak']} days")
+    log(f"  - Weekly reviews: {stats['weekly_reviews']:,}")
 
     # Copy stats.json to docs/ for GitHub Pages
     if docs_dir.exists():
@@ -177,6 +221,11 @@ def main():
         action='store_true',
         help='Compact output for notifications (Keyboard Maestro, etc.)'
     )
+    parser.add_argument(
+        '-f', '--force',
+        action='store_true',
+        help='Force sync even if database has not changed'
+    )
 
     args = parser.parse_args()
 
@@ -185,7 +234,8 @@ def main():
         commit=not args.no_commit,
         push=not args.no_push,
         repo_root=args.repo,
-        quiet=args.quiet
+        quiet=args.quiet,
+        force=args.force
     )
 
     sys.exit(0 if success else 1)
