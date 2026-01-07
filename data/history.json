@@ -34,5 +34,14 @@
     "streak": 1,
     "weekly_reviews": 57,
     "weekly_time_minutes": 36
+  },
+  {
+    "date": "2026-01-07",
+    "total_cards": 2479,
+    "mature_cards": 73,
+    "new_cards": 2390,
+    "streak": 2,
+    "weekly_reviews": 98,
+    "weekly_time_minutes": 65
   }
 ]

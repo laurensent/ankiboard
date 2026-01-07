@@ -1,9 +1,9 @@
 {
   "cards": {
     "total": 2479,
-    "new": 2404,
+    "new": 2390,
     "learning": 16,
-    "mature": 59,
+    "mature": 73,
     "suspended": 0
   },
   "decks": {
@@ -143,15 +143,15 @@
       "name": "LeetCode",
       "id": "1766645040578",
       "total": 1140,
-      "new": 1113,
-      "mature": 27
+      "new": 1100,
+      "mature": 40
     },
     "1767601455653": {
       "name": "English",
       "id": "1767601455653",
       "total": 1,
-      "new": 1,
-      "mature": 0
+      "new": 0,
+      "mature": 1
     },
     "1767613746986": {
       "name": "Middleware",
@@ -175,7 +175,8 @@
     "2025-12-08": 35,
     "2026-01-03": 15,
     "2026-01-04": 2,
-    "2026-01-06": 40
+    "2026-01-06": 40,
+    "2026-01-07": 41
   },
   "daily_time": {
     "2025-03-16": 0,
@@ -194,13 +195,19 @@
     "2025-12-08": 15,
     "2026-01-03": 10,
     "2026-01-04": 2,
-    "2026-01-06": 23
+    "2026-01-06": 23,
+    "2026-01-07": 29
   },
   "deck_reviews": [
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 57
+      "reviews": 97
+    },
+    {
+      "id": "1767601455653",
+      "name": "English",
+      "reviews": 1
     },
     {
       "id": "1763966727334",
@@ -280,11 +287,6 @@
     {
       "id": "1752591461759",
       "name": "Java::JavaThreadCode",
-      "reviews": 0
-    },
-    {
-      "id": "1767601455653",
-      "name": "English",
       "reviews": 0
     }
   ],
@@ -292,22 +294,12 @@
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 57
+      "reviews": 97
     },
     {
-      "id": "1752591422460",
-      "name": "Java::JavaCollections",
-      "reviews": 17
-    },
-    {
-      "id": "1752582991326",
-      "name": "Java::JavaBasic",
-      "reviews": 10
-    },
-    {
-      "id": "1752591450102",
-      "name": "Java::JavaConcurrency",
-      "reviews": 8
+      "id": "1767601455653",
+      "name": "English",
+      "reviews": 1
     },
     {
       "id": "1763966727334",
@@ -335,6 +327,11 @@
       "reviews": 0
     },
     {
+      "id": "1752591450102",
+      "name": "Java::JavaConcurrency",
+      "reviews": 0
+    },
+    {
       "id": "1756284035793",
       "name": "Project::QJob",
       "reviews": 0
@@ -350,8 +347,18 @@
       "reviews": 0
     },
     {
+      "id": "1752582991326",
+      "name": "Java::JavaBasic",
+      "reviews": 0
+    },
+    {
       "id": "1753177443885",
       "name": "Middleware::Kafka",
+      "reviews": 0
+    },
+    {
+      "id": "1752591422460",
+      "name": "Java::JavaCollections",
       "reviews": 0
     },
     {
@@ -373,16 +380,11 @@
       "id": "1752591461759",
       "name": "Java::JavaThreadCode",
       "reviews": 0
-    },
-    {
-      "id": "1767601455653",
-      "name": "English",
-      "reviews": 0
     }
   ],
-  "streak": 1,
-  "weekly_reviews": 57,
-  "weekly_time_minutes": 36,
+  "streak": 2,
+  "weekly_reviews": 98,
+  "weekly_time_minutes": 65,
   "heatmap_data": [
     {
       "date": "2025-01-06",
@@ -2579,7 +2581,13 @@
       "count": 40,
       "weekday": 1,
       "week": 52
+    },
+    {
+      "date": "2026-01-07",
+      "count": 41,
+      "weekday": 2,
+      "week": 52
     }
   ],
-  "generated_at": "2026-01-06T22:23:54.282884"
+  "generated_at": "2026-01-07T17:55:01.653927"
 }
