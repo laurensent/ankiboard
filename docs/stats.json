@@ -1,9 +1,9 @@
 {
   "cards": {
-    "total": 2479,
-    "new": 2390,
+    "total": 2480,
+    "new": 2386,
     "learning": 16,
-    "mature": 73,
+    "mature": 78,
     "suspended": 0
   },
   "decks": {
@@ -143,8 +143,8 @@
       "name": "LeetCode",
       "id": "1766645040578",
       "total": 1140,
-      "new": 1100,
-      "mature": 40
+      "new": 1095,
+      "mature": 45
     },
     "1767601455653": {
       "name": "English",
@@ -156,6 +156,13 @@
     "1767613746986": {
       "name": "Middleware",
       "id": "1767613746986"
+    },
+    "1767799238485": {
+      "name": "Test",
+      "id": "1767799238485",
+      "total": 1,
+      "new": 1,
+      "mature": 0
     }
   },
   "daily_reviews": {
@@ -176,7 +183,8 @@
     "2026-01-03": 15,
     "2026-01-04": 2,
     "2026-01-06": 40,
-    "2026-01-07": 41
+    "2026-01-07": 41,
+    "2026-01-08": 27
   },
   "daily_time": {
     "2025-03-16": 0,
@@ -196,13 +204,14 @@
     "2026-01-03": 10,
     "2026-01-04": 2,
     "2026-01-06": 23,
-    "2026-01-07": 29
+    "2026-01-07": 29,
+    "2026-01-08": 24
   },
   "deck_reviews": [
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 97
+      "reviews": 124
     },
     {
       "id": "1767601455653",
@@ -287,6 +296,11 @@
     {
       "id": "1752591461759",
       "name": "Java::JavaThreadCode",
+      "reviews": 0
+    },
+    {
+      "id": "1767799238485",
+      "name": "Test",
       "reviews": 0
     }
   ],
@@ -294,7 +308,7 @@
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 97
+      "reviews": 124
     },
     {
       "id": "1767601455653",
@@ -380,11 +394,16 @@
       "id": "1752591461759",
       "name": "Java::JavaThreadCode",
       "reviews": 0
+    },
+    {
+      "id": "1767799238485",
+      "name": "Test",
+      "reviews": 0
     }
   ],
-  "streak": 2,
-  "weekly_reviews": 98,
-  "weekly_time_minutes": 65,
+  "streak": 3,
+  "weekly_reviews": 125,
+  "weekly_time_minutes": 89,
   "heatmap_data": [
     {
       "date": "2025-01-06",
@@ -2587,7 +2606,13 @@
       "count": 41,
       "weekday": 2,
       "week": 52
+    },
+    {
+      "date": "2026-01-08",
+      "count": 27,
+      "weekday": 3,
+      "week": 52
     }
   ],
-  "generated_at": "2026-01-07T19:04:07.998132"
+  "generated_at": "2026-01-08T18:23:58.268587"
 }

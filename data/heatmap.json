@@ -2200,5 +2200,11 @@
     "count": 41,
     "weekday": 2,
     "week": 52
+  },
+  {
+    "date": "2026-01-08",
+    "count": 27,
+    "weekday": 3,
+    "week": 52
   }
 ]
