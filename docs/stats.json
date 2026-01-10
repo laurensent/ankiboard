@@ -1,9 +1,9 @@
 {
   "cards": {
     "total": 2480,
-    "new": 2386,
-    "learning": 16,
-    "mature": 78,
+    "new": 2374,
+    "learning": 26,
+    "mature": 80,
     "suspended": 0
   },
   "decks": {
@@ -75,8 +75,8 @@
       "name": "Middleware::Kafka",
       "id": "1753177443885",
       "total": 60,
-      "new": 55,
-      "mature": 2
+      "new": 53,
+      "mature": 4
     },
     "1756284035793": {
       "name": "Project::QJob",
@@ -136,7 +136,7 @@
       "name": "QA",
       "id": "1763966727334",
       "total": 175,
-      "new": 175,
+      "new": 165,
       "mature": 0
     },
     "1766645040578": {
@@ -184,7 +184,8 @@
     "2026-01-04": 2,
     "2026-01-06": 40,
     "2026-01-07": 41,
-    "2026-01-08": 27
+    "2026-01-08": 28,
+    "2026-01-09": 15
   },
   "daily_time": {
     "2025-03-16": 0,
@@ -205,7 +206,8 @@
     "2026-01-04": 2,
     "2026-01-06": 23,
     "2026-01-07": 29,
-    "2026-01-08": 24
+    "2026-01-08": 24,
+    "2026-01-09": 3
   },
   "deck_reviews": [
     {
@@ -214,14 +216,19 @@
       "reviews": 124
     },
     {
+      "id": "1763966727334",
+      "name": "QA",
+      "reviews": 11
+    },
+    {
+      "id": "1753177443885",
+      "name": "Middleware::Kafka",
+      "reviews": 5
+    },
+    {
       "id": "1767601455653",
       "name": "English",
       "reviews": 1
-    },
-    {
-      "id": "1763966727334",
-      "name": "QA",
-      "reviews": 0
     },
     {
       "id": "1760599190570",
@@ -266,11 +273,6 @@
     {
       "id": "1752582991326",
       "name": "Java::JavaBasic",
-      "reviews": 0
-    },
-    {
-      "id": "1753177443885",
-      "name": "Middleware::Kafka",
       "reviews": 0
     },
     {
@@ -311,14 +313,19 @@
       "reviews": 124
     },
     {
+      "id": "1763966727334",
+      "name": "QA",
+      "reviews": 11
+    },
+    {
+      "id": "1753177443885",
+      "name": "Middleware::Kafka",
+      "reviews": 5
+    },
+    {
       "id": "1767601455653",
       "name": "English",
       "reviews": 1
-    },
-    {
-      "id": "1763966727334",
-      "name": "QA",
-      "reviews": 0
     },
     {
       "id": "1760599190570",
@@ -366,11 +373,6 @@
       "reviews": 0
     },
     {
-      "id": "1753177443885",
-      "name": "Middleware::Kafka",
-      "reviews": 0
-    },
-    {
       "id": "1752591422460",
       "name": "Java::JavaCollections",
       "reviews": 0
@@ -401,9 +403,9 @@
       "reviews": 0
     }
   ],
-  "streak": 3,
-  "weekly_reviews": 125,
-  "weekly_time_minutes": 89,
+  "streak": 4,
+  "weekly_reviews": 126,
+  "weekly_time_minutes": 93,
   "heatmap_data": [
     {
       "date": "2025-01-06",
@@ -2609,10 +2611,22 @@
     },
     {
       "date": "2026-01-08",
-      "count": 27,
+      "count": 28,
       "weekday": 3,
+      "week": 52
+    },
+    {
+      "date": "2026-01-09",
+      "count": 15,
+      "weekday": 4,
+      "week": 52
+    },
+    {
+      "date": "2026-01-10",
+      "count": 0,
+      "weekday": 5,
       "week": 52
     }
   ],
-  "generated_at": "2026-01-08T18:23:58.268587"
+  "generated_at": "2026-01-10T14:34:42.526382"
 }
