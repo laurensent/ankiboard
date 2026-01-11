@@ -21,6 +21,7 @@ class StatsCalculator:
             weekly_time = reader.get_total_review_time(7)
             deck_reviews = reader.get_deck_review_counts(7)
             monthly_deck_reviews = reader.get_deck_review_counts(30)
+            daily_deck_counts = reader.get_daily_deck_counts(365)
 
         # Build deck reviews ranking with names
         deck_reviews_ranked = self._build_deck_reviews_ranking(decks, deck_reviews)
@@ -31,11 +32,13 @@ class StatsCalculator:
             'decks': decks,
             'daily_reviews': daily_reviews,
             'daily_time': daily_time,
+            'daily_deck_counts': daily_deck_counts,
             'deck_reviews': deck_reviews_ranked,
             'monthly_deck_reviews': monthly_reviews_ranked,
             'streak': self._calculate_streak(daily_reviews),
             'weekly_reviews': self._calculate_weekly_reviews(daily_reviews),
             'weekly_time_minutes': weekly_time // 60000,
+            'last_study_date': self._get_last_study_date(daily_reviews),
             'heatmap_data': self._prepare_heatmap_data(daily_reviews),
             'generated_at': datetime.now().isoformat()
         }
@@ -116,11 +119,19 @@ class StatsCalculator:
 
         return total
 
+    def _get_last_study_date(self, daily_reviews):
+        """Get the most recent study date"""
+        if not daily_reviews:
+            return None
+        return max(daily_reviews.keys())
+
     def _prepare_heatmap_data(self, daily_reviews):
-        """Prepare data for 52-week heatmap"""
+        """Prepare data for 52-week heatmap (Sunday-based weeks)"""
         today = datetime.now().date()
-        # Start from the beginning of the week, 52 weeks ago
-        start = today - timedelta(days=today.weekday() + 52 * 7)
+        # Calculate days since last Sunday (Sunday=6 in Python weekday)
+        days_since_sunday = (today.weekday() + 1) % 7
+        # Start from 51 weeks ago (to get 52 weeks total including current week)
+        start = today - timedelta(days=days_since_sunday + 51 * 7)
 
         heatmap = []
         current = start
@@ -128,10 +139,12 @@ class StatsCalculator:
         while current <= today:
             date_str = current.strftime('%Y-%m-%d')
             count = daily_reviews.get(date_str, 0)
+            # Sunday=0 for display (GitHub style)
+            display_weekday = (current.weekday() + 1) % 7
             heatmap.append({
                 'date': date_str,
                 'count': count,
-                'weekday': current.weekday(),
+                'weekday': display_weekday,
                 'week': (current - start).days // 7
             })
             current += timedelta(days=1)

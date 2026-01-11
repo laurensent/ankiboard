@@ -107,7 +107,6 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False
     exporter = DataExporter(data_dir)
     exporter.export_stats(stats)
     exporter.export_history(stats)
-    exporter.export_heatmap_data(stats)
     log(f"  - Total cards: {stats['cards']['total']:,}")
     log(f"  - Current streak: {stats['streak']} days")
     log(f"  - Weekly reviews: {stats['weekly_reviews']:,}")
@@ -133,7 +132,6 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False
             files_to_stage = [
                 "data/stats.json",
                 "data/history.json",
-                "data/heatmap.json",
                 "docs/stats.json"
             ]
 
@@ -145,9 +143,13 @@ def sync_stats(db_path=None, commit=True, push=True, repo_root=None, quiet=False
             if success:
                 log("  - No changes to commit")
             else:
-                # Commit
+                # Commit with stats summary
                 date_str = stats['generated_at'][:10]
-                commit_msg = f"chore: sync anki stats ({date_str})"
+                cards = stats['cards']['total']
+                reviews = stats['weekly_reviews']
+                streak = stats['streak']
+                time_min = stats.get('weekly_time_minutes', 0)
+                commit_msg = f"chore: sync anki stats ({date_str})\n\n{cards:,} cards | {reviews} reviews | {streak} days | {time_min}min"
 
                 success, _, stderr = run_git_command(
                     ['commit', '-m', commit_msg],

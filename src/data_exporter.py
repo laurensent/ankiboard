@@ -59,15 +59,6 @@ class DataExporter:
 
         return history_file
 
-    def export_heatmap_data(self, stats):
-        """Export heatmap data separately for easier processing"""
-        heatmap_file = self.output_dir / "heatmap.json"
-
-        with open(heatmap_file, 'w', encoding='utf-8') as f:
-            json.dump(stats['heatmap_data'], f, indent=2)
-
-        return heatmap_file
-
     def export_all(self, db_path=None):
         """Export all statistics"""
         calc = StatsCalculator(db_path)
@@ -75,7 +66,6 @@ class DataExporter:
 
         self.export_stats(stats)
         self.export_history(stats)
-        self.export_heatmap_data(stats)
 
         return stats
 

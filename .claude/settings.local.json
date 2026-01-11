@@ -25,7 +25,9 @@
       "Bash(gh repo edit:*)",
       "Bash(gh repo view:*)",
       "Bash(gh repo rename:*)",
-      "Bash(git remote:*)"
+      "Bash(git remote:*)",
+      "Bash(gh workflow run:*)",
+      "Bash(git check-ignore:*)"
     ]
   }
 }

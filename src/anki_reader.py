@@ -41,20 +41,18 @@ def get_default_anki_db_path():
     if not anki_base.exists():
         raise FileNotFoundError(f"Anki directory not found: {anki_base}")
 
-    # Find profiles
+    # Find profiles with valid collection.anki2
     profiles = [d for d in anki_base.iterdir()
                 if d.is_dir() and not d.name.startswith('.')
-                and d.name not in ('addons21', 'logs')]
+                and d.name not in ('addons21', 'logs')
+                and (d / "collection.anki2").exists()]
 
     if not profiles:
-        raise FileNotFoundError("No Anki profile found")
+        raise FileNotFoundError("No Anki profile with collection.anki2 found")
 
-    # Use first profile found
+    # Use first valid profile
     profile = profiles[0]
     db_path = profile / "collection.anki2"
-
-    if not db_path.exists():
-        raise FileNotFoundError(f"Anki database not found: {db_path}")
 
     return str(db_path)
 
@@ -245,6 +243,25 @@ class AnkiReader:
         """, (cutoff,))
 
         return {str(row['deck_id']): row['review_count'] for row in cursor.fetchall()}
+
+    def get_daily_deck_counts(self, days=365):
+        """Get count of unique decks studied per day"""
+        cursor = self.conn.cursor()
+
+        cutoff = int((datetime.now() - timedelta(days=days)).timestamp() * 1000)
+
+        cursor.execute("""
+            SELECT
+                date(r.id/1000, 'unixepoch', 'localtime') as review_date,
+                COUNT(DISTINCT c.did) as deck_count
+            FROM revlog r
+            JOIN cards c ON r.cid = c.id
+            WHERE r.id > ?
+            GROUP BY review_date
+            ORDER BY review_date
+        """, (cutoff,))
+
+        return {row['review_date']: row['deck_count'] for row in cursor.fetchall()}
 
 
 if __name__ == "__main__":

@@ -4,464 +4,226 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ankiboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #24292f;
-      --text-secondary: #656d76;
-      --border: #d0d7de;
-      --card-bg: #f6f8fa;
-      --empty: #ebedf0;
-      --green-1: #9be9a8;
-      --green-2: #40c463;
-      --green-3: #30a14e;
-      --green-4: #216e39;
-      --bar-color: #40c463;
-      --line-color: #8250df;
-    }
-    [data-theme="dark"] {
-      --bg: #0d1117;
-      --text: #c9d1d9;
-      --text-secondary: #8b949e;
-      --border: #30363d;
-      --card-bg: #161b22;
-      --empty: #21262d;
+      --bg: #0d0d0d;
+      --card: #1a1a1a;
+      --text: #ffffff;
+      --text-dim: #888888;
+      --text-muted: #555555;
+      --accent: #4ade80;
+      --orange: #fb923c;
+      --gray-1: #2a2a2a;
       --green-1: #0e4429;
       --green-2: #006d32;
       --green-3: #26a641;
-      --green-4: #39d353;
-      --bar-color: #39d353;
-      --line-color: #a371f7;
+      --green-4: #4ade80;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      background: var(--bg); color: var(--text);
-      padding: 20px; max-width: 900px; margin: 0 auto; font-size: 14px;
-    }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-    h1 { font-size: 24px; }
-    h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-    .theme-toggle { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-    section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .badges img { height: 20px; }
-
-    /* Heatmap - GitHub style */
-    .heatmap-container { overflow-x: auto; overflow-y: visible; padding-top: 40px; margin-top: -40px; padding-bottom: 8px; }
-    .heatmap-wrapper { display: inline-flex; min-width: max-content; }
-    .heatmap-labels { display: flex; flex-direction: column; padding-top: 22px; margin-right: 8px; }
-    .heatmap-labels span { height: 13px; font-size: 12px; color: var(--text-secondary); line-height: 13px; }
-    .heatmap-grid { display: flex; flex-direction: column; }
-    .heatmap-months { display: flex; height: 15px; font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
-    .heatmap-weeks { display: flex; gap: 4px; }
-    .heatmap-week { display: flex; flex-direction: column; gap: 4px; }
-    .heatmap-day { width: 11px; height: 11px; border-radius: 2px; background: var(--empty); cursor: pointer; position: relative; }
-    .heatmap-day.empty { background: transparent; cursor: default; pointer-events: none; }
-    .heatmap-day:not(.empty):hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #24292f; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; white-space: nowrap; z-index: 100; margin-bottom: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .heatmap-day.l1 { background: var(--green-1); }
-    .heatmap-day.l2 { background: var(--green-2); }
-    .heatmap-day.l3 { background: var(--green-3); }
-    .heatmap-day.l4 { background: var(--green-4); }
-    .heatmap-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
-    .heatmap-legend { display: flex; align-items: center; gap: 3px; font-size: 12px; color: var(--text-secondary); }
-    .heatmap-level { width: 11px; height: 11px; border-radius: 2px; background: var(--empty); }
-    .heatmap-level.l1 { background: var(--green-1); }
-    .heatmap-level.l2 { background: var(--green-2); }
-    .heatmap-level.l3 { background: var(--green-3); }
-    .heatmap-level.l4 { background: var(--green-4); }
-
-    /* Charts */
-    .chart-row { display: flex; gap: 16px; }
-    .chart-row > div { flex: 1; min-width: 0; }
-    .chart-container { position: relative; height: 120px; }
-
-    /* Deck progress - stacked bar */
-    .deck-list { display: flex; flex-direction: column; gap: 8px; }
-    .deck-item { display: flex; align-items: center; gap: 8px; }
-    .deck-name { width: 160px; font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
-    .deck-count { min-width: 40px; font-size: 12px; color: var(--text-secondary); text-align: right; flex-shrink: 0; }
-    .deck-bar-wrap { flex: 1; position: relative; cursor: pointer; }
-    .deck-bar-wrap:hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #24292f; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; white-space: nowrap; z-index: 100; margin-bottom: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .deck-bar { height: 10px; display: flex; border-radius: 5px; overflow: hidden; }
-    .deck-seg { height: 100%; min-width: 0; }
-    .deck-seg.mature { background: #2da44e; }
-    .deck-seg.learning { background: #f0883e; }
-    .deck-seg.new { background: var(--empty); color: var(--text-secondary); }
-    .deck-legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary); }
-    .deck-legend span { display: inline-flex; align-items: center; gap: 4px; }
-    .deck-legend .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .deck-legend .dot-mature { background: #2da44e; }
-    .deck-legend .dot-learning { background: #f0883e; }
-    .deck-legend .dot-new { background: var(--empty); }
-
-    /* Monthly ranking */
-    .rank-list { display: flex; flex-direction: column; gap: 8px; }
-    .rank-item { display: flex; align-items: center; gap: 8px; }
-    .rank-name { width: 160px; font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
-    .rank-bar-wrap { flex: 1; position: relative; cursor: pointer; }
-    .rank-bar-wrap:hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #24292f; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; white-space: nowrap; z-index: 100; margin-bottom: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .rank-bar-bg { height: 10px; background: var(--empty); border-radius: 5px; overflow: hidden; }
-    .rank-bar-fill { height: 100%; background: var(--bar-color); border-radius: 5px; }
-    .rank-count { min-width: 40px; font-size: 12px; color: var(--text-secondary); text-align: right; flex-shrink: 0; }
-
-    footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-secondary); }
-    footer a { color: var(--text-secondary); }
-
-    @media (max-width: 600px) {
-      .chart-row { flex-direction: column; }
-      .deck-name, .rank-name { width: 100px; }
-    }
+    body { font-family: 'JetBrains Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; padding: 40px 20px; }
+    .container { max-width: 720px; margin: 0 auto; }
+    .header { margin-bottom: 24px; }
+    .logo { font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; }
+    .logo a { color: var(--text); text-decoration: none; }
+    .logo a:hover { opacity: 0.8; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .badge { display: inline-flex; font-size: 0.6rem; border-radius: 4px; overflow: hidden; }
+    .badge-label { padding: 4px 6px; background: #333; color: var(--text-dim); }
+    .badge-value { padding: 4px 6px; font-weight: 500; }
+    .badge-blue .badge-value { background: #2563eb; color: #fff; }
+    .badge-purple .badge-value { background: #7c3aed; color: #fff; }
+    .badge-green .badge-value { background: #16a34a; color: #fff; }
+    .badge-orange .badge-value { background: #ea580c; color: #fff; }
+    .badge-red .badge-value { background: #dc2626; color: #fff; }
+    .card { background: var(--card); border-radius: 8px; padding: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+    .grid-3 .card { min-height: 120px; }
+    .label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+    .sublabel { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 4px; }
+    .value { font-size: 1.8rem; font-weight: 600; }
+    .weekly-card { display: flex; flex-direction: column; }
+    .weekly-card .label { margin-bottom: 4px; }
+    .weekly-card .sublabel { margin-bottom: 8px; }
+    .weekly-chart { display: flex; align-items: flex-end; gap: 6px; height: 60px; flex: 1; }
+    .bar-num { font-size: 0.5rem; color: var(--text-muted); height: 12px; }
+    .bar-num.active { color: var(--accent); }
+    .bar { width: 100%; background: var(--gray-1); border-radius: 2px; min-height: 4px; }
+    .bar.active { background: var(--accent); }
+    .bar-label { font-size: 0.55rem; color: var(--text-muted); }
+    .bar-label.today { color: var(--accent); }
+    .section { margin-bottom: 12px; }
+    .section-title { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+    .heatmap-inner { display: flex; flex-direction: column; }
+    .heatmap-months { display: flex; margin-left: 28px; margin-bottom: 4px; }
+    .heatmap-months span { font-size: 0.55rem; color: var(--text-muted); flex-shrink: 0; }
+    .heatmap-body { display: flex; }
+    .heatmap-days { display: flex; flex-direction: column; margin-right: 4px; flex-shrink: 0; }
+    .heatmap-days span { font-size: 0.55rem; color: var(--text-muted); text-align: right; width: 22px; flex: 1; display: flex; align-items: center; justify-content: flex-end; }
+    .heatmap-grid { display: grid; grid-template-columns: repeat(52, 1fr); gap: 2px; flex: 1; }
+    .heatmap-week { display: grid; grid-template-rows: repeat(7, 1fr); gap: 2px; }
+    .heatmap-cell { aspect-ratio: 1; border-radius: 2px; background: var(--gray-1); cursor: pointer; position: relative; }
+    .heatmap-cell.future { background: transparent; }
+    .heatmap-cell:not(.future):hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; border: 1px solid #444; color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 0.6rem; white-space: nowrap; z-index: 100; }
+    .heatmap-cell.l1 { background: var(--green-1); }
+    .heatmap-cell.l2 { background: var(--green-2); }
+    .heatmap-cell.l3 { background: var(--green-3); }
+    .heatmap-cell.l4 { background: var(--green-4); }
+    .heatmap-legend { display: flex; justify-content: flex-start; align-items: center; gap: 3px; margin-top: 8px; margin-left: 28px; font-size: 0.55rem; color: var(--text-muted); }
+    .legend-cell { width: 10px; height: 10px; border-radius: 2px; background: var(--gray-1); }
+    .legend-cell.l1 { background: var(--green-1); }
+    .legend-cell.l2 { background: var(--green-2); }
+    .legend-cell.l3 { background: var(--green-3); }
+    .legend-cell.l4 { background: var(--green-4); }
+    .top-deck-list { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-flow: column; grid-template-rows: repeat(3, 1fr); gap: 10px 24px; }
+    .top-deck-item { display: flex; align-items: center; gap: 6px; position: relative; cursor: default; }
+    .top-deck-item:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; border: 1px solid #444; color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 0.6rem; white-space: nowrap; z-index: 100; }
+    .rank { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); width: 14px; }
+    .deck-name { font-size: 0.7rem; color: var(--text); }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; cursor: default; }
+    .bar-col:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; border: 1px solid #444; color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 0.6rem; white-space: nowrap; z-index: 100; }
+    .deck-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .deck-item { background: var(--card); border-radius: 6px; padding: 14px; display: flex; flex-direction: column; gap: 6px; position: relative; cursor: default; }
+    .deck-item:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; border: 1px solid #444; color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 0.6rem; white-space: nowrap; z-index: 100; }
+    .deck-item .name { font-size: 0.7rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .deck-item .stats { font-size: 1.2rem; font-weight: 600; color: var(--text); }
+    .footer { margin-top: 24px; text-align: center; font-size: 0.7rem; color: var(--text-muted); }
+    .footer a { color: var(--text-muted); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    @media (max-width: 768px) { .grid-3 { grid-template-columns: 1fr; } .deck-grid { grid-template-columns: repeat(2, 1fr); } }
   </style>
 </head>
 <body>
-  <header>
-    <h1><a href="https://github.com/laurensent/ankiboard" style="color: inherit; text-decoration: none;">Ankiboard</a></h1>
-    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Toggle theme"></button>
-  </header>
-
-  <div class="badges" id="badges"></div>
-
-  <section>
-    <h2>Review Activity</h2>
-    <div class="heatmap-container">
-      <div class="heatmap-wrapper">
-        <div class="heatmap-labels">
-          <span></span><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span>
-        </div>
-        <div class="heatmap-grid">
+  <div class="container">
+    <div class="header"><h1 class="logo"><a href="https://github.com/laurensent/ankiboard">Ankiboard</a></h1></div>
+    <div class="badges" id="badges"></div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="label">Last Study</div>
+        <div class="sublabel" id="last-study-date">--</div>
+        <div class="value" id="days-ago">--</div>
+      </div>
+      <div class="card">
+        <div class="label">Streak</div>
+        <div class="sublabel">Consecutive Days</div>
+        <div class="value" id="streak-value">--</div>
+      </div>
+      <div class="card weekly-card">
+        <div class="label">Weekly Decks</div>
+        <div class="sublabel" id="weekly-total">--</div>
+        <div class="weekly-chart" id="weekly-chart"></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Activity</div>
+      <div class="card">
+        <div class="heatmap-inner">
           <div class="heatmap-months" id="heatmap-months"></div>
-          <div class="heatmap-weeks" id="heatmap"></div>
+          <div class="heatmap-body">
+            <div class="heatmap-days"><span></span><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span></div>
+            <div class="heatmap-grid" id="heatmap"></div>
+          </div>
         </div>
+        <div class="heatmap-legend"><span>Less</span><span class="legend-cell"></span><span class="legend-cell l1"></span><span class="legend-cell l2"></span><span class="legend-cell l3"></span><span class="legend-cell l4"></span><span>More</span></div>
       </div>
     </div>
-    <div class="heatmap-footer">
-      <div class="heatmap-legend">
-        <span>Less</span>
-        <span class="heatmap-level l0"></span>
-        <span class="heatmap-level l1"></span>
-        <span class="heatmap-level l2"></span>
-        <span class="heatmap-level l3"></span>
-        <span class="heatmap-level l4"></span>
-        <span>More</span>
-      </div>
+    <div class="section">
+      <div class="section-title">Top Deck</div>
+      <div class="card"><div class="top-deck-list" id="top-deck-list"></div></div>
     </div>
-  </section>
-
-  <section>
-    <h2>This Week</h2>
-    <div class="chart-row">
-      <div>
-        <div class="chart-container"><canvas id="reviewsChart"></canvas></div>
-      </div>
-      <div>
-        <div class="chart-container"><canvas id="timeChart"></canvas></div>
-      </div>
+    <div class="section">
+      <div class="section-title">All Decks</div>
+      <div class="deck-grid" id="deck-list"></div>
     </div>
-  </section>
-
-  <section>
-    <h2>This Month</h2>
-    <div class="rank-list" id="monthly-rank"></div>
-  </section>
-
-  <section>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <h2 style="margin:0">All Decks</h2>
-      <div class="deck-legend">
-        <span><span class="dot dot-mature"></span>Mastered</span>
-        <span><span class="dot dot-learning"></span>Learning</span>
-        <span><span class="dot dot-new"></span>New</span>
-      </div>
-    </div>
-    <div class="deck-list" id="deck-list"></div>
-  </section>
-
-  <footer>
-    Generated by <a href="https://github.com/laurensent/ankiboard">Ankiboard</a> |
-    Charts powered by <a href="https://www.chartjs.org/">Chart.js</a>
-  </footer>
-
+    <div class="footer">Made by <a href="https://github.com/laurensent">Lauren</a></div>
+  </div>
   <script>
-    let reviewsChart, timeChart;
-    let isDark = false;
-
-    function getPreferredTheme() {
-      return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    function getDaysAgo(dateStr) {
+      if (!dateStr) return { days: '--', formatted: '--' };
+      const date = new Date(dateStr), today = new Date();
+      today.setHours(0,0,0,0); date.setHours(0,0,0,0);
+      const diff = Math.floor((today - date) / 86400000);
+      if (diff === 0) return { days: 'Today', formatted: dateStr };
+      if (diff === 1) return { days: '1 Day Ago', formatted: dateStr };
+      return { days: `${diff} Days Ago`, formatted: dateStr };
     }
-
-    function setTheme(theme) {
-      isDark = theme === 'dark';
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-      const btn = document.getElementById('theme-btn');
-      btn.innerHTML = isDark
-        ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13zM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8zM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061zM2.343 13.657a.75.75 0 0 1 0-1.061l1.06-1.06a.75.75 0 1 1 1.061 1.06l-1.06 1.06a.75.75 0 0 1-1.061 0zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.06 0z"/></svg>'
-        : '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.598 1.591a.75.75 0 0 1 .785-.175 7 7 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786z"/></svg>';
-      updateChartColors();
+    function renderBadges(s) {
+      const d = s.generated_at.slice(0,10).replace(/-/g,'--'), t = s.cards.total.toLocaleString().replace(/,/g,'_');
+      const m = s.cards.total - s.cards.suspended > 0 ? Math.round(s.cards.mature / (s.cards.total - s.cards.suspended) * 100) : 0;
+      document.getElementById('badges').innerHTML = `<img src="https://img.shields.io/badge/Last_Sync-${d}-blue"><img src="https://img.shields.io/badge/Total_Cards-${t}-blueviolet"><img src="https://img.shields.io/badge/Mastery-${m}%25-2ea043"><img src="https://img.shields.io/badge/Streak-${s.streak}_days-orange"><img src="https://img.shields.io/badge/Weekly_Reviews-${s.weekly_reviews||0}-e53935"><img src="https://img.shields.io/badge/Weekly_Time-${s.weekly_time_minutes||0}_min-e53935">`;
     }
-
-    function toggleTheme() {
-      setTheme(isDark ? 'light' : 'dark');
+    function renderWeekly(data) {
+      const c = document.getElementById('weekly-chart'), days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], today = new Date();
+      const last7 = Array.from({length:7},(_,i)=>{const d=new Date(today);d.setDate(d.getDate()-(6-i));return{date:d.toISOString().slice(0,10),day:days[d.getDay()],isToday:i===6};});
+      const counts = last7.map(d=>data[d.date]||0), max = Math.max(...counts,1), total = counts.reduce((a,b)=>a+b,0);
+      document.getElementById('weekly-total').textContent = total + ' Decks';
+      c.innerHTML = last7.map((d,i)=>`<div class="bar-col" data-tip="${d.date}: ${counts[i]} decks"><div class="bar ${counts[i]>0?'active':''}" style="height:${counts[i]>0?Math.max(16,(counts[i]/max)*50):4}px"></div><div class="bar-label ${d.isToday?'today':''}">${d.day}</div></div>`).join('');
     }
-
-    function getChartColors() {
-      return {
-        text: isDark ? '#c9d1d9' : '#24292f',
-        textSecondary: isDark ? '#8b949e' : '#656d76',
-        grid: isDark ? '#30363d' : '#ebedf0',
-        bar: isDark ? '#39d353' : '#40c463',
-        line: isDark ? '#a371f7' : '#8250df',
-      };
-    }
-
-    function updateChartColors() {
-      const colors = getChartColors();
-      if (reviewsChart) {
-        reviewsChart.options.scales.x.ticks.color = colors.textSecondary;
-        reviewsChart.options.scales.y.ticks.color = colors.textSecondary;
-        reviewsChart.options.scales.y.grid.color = colors.grid;
-        reviewsChart.data.datasets[0].backgroundColor = colors.bar;
-        reviewsChart.update();
-      }
-      if (timeChart) {
-        timeChart.options.scales.x.ticks.color = colors.textSecondary;
-        timeChart.options.scales.y.ticks.color = colors.textSecondary;
-        timeChart.options.scales.y.grid.color = colors.grid;
-        timeChart.data.datasets[0].borderColor = colors.line;
-        timeChart.data.datasets[0].pointBorderColor = colors.line;
-        timeChart.data.datasets[0].pointBackgroundColor = isDark ? '#0d1117' : '#ffffff';
-        timeChart.update();
-      }
-    }
-
-    function renderBadges(stats) {
-      const date = stats.generated_at.slice(0, 10).replace(/-/g, '--');
-      const total = stats.cards.total.toLocaleString().replace(/,/g, '_');
-      const active = stats.cards.total - stats.cards.suspended;
-      const mastery = active > 0 ? Math.round(stats.cards.mature / active * 100) : 0;
-      document.getElementById('badges').innerHTML = `
-        <a href="https://github.com/laurensent/ankiboard/actions/workflows/pages.yml"><img src="https://github.com/laurensent/ankiboard/actions/workflows/pages.yml/badge.svg"></a>
-        <img src="https://img.shields.io/badge/Last_Sync-${date}-blue">
-        <img src="https://img.shields.io/badge/Total_Cards-${total}-blueviolet">
-        <img src="https://img.shields.io/badge/Mastery-${mastery}%25-2ea043">
-        <img src="https://img.shields.io/badge/Streak-${stats.streak}_days-orange">
-        <img src="https://img.shields.io/badge/Weekly_Reviews-${stats.weekly_reviews || 0}-e53935">
-        <img src="https://img.shields.io/badge/Weekly_Time-${stats.weekly_time_minutes || 0}_min-e53935">
-      `;
-    }
-
     function renderHeatmap(data) {
-      const weeksContainer = document.getElementById('heatmap');
-      const monthsContainer = document.getElementById('heatmap-months');
-
+      const g = document.getElementById('heatmap'), m = document.getElementById('heatmap-months');
+      const today = new Date(), todayStr = today.toISOString().slice(0,10);
+      const dataMap = {};
+      data.forEach(d => dataMap[d.date] = d.count);
+      const daysSinceSun = (today.getDay() + 7) % 7;
+      const startDate = new Date(today);
+      startDate.setDate(today.getDate() - daysSinceSun - 51 * 7);
       const weeks = [];
-      let currentWeek = [];
-      data.forEach(d => {
-        if (d.weekday === 0 && currentWeek.length > 0) {
-          weeks.push(currentWeek);
-          currentWeek = [];
+      for (let w = 0; w < 52; w++) {
+        const week = [];
+        for (let d = 0; d < 7; d++) {
+          const date = new Date(startDate);
+          date.setDate(startDate.getDate() + w * 7 + d);
+          const dateStr = date.toISOString().slice(0,10);
+          week.push({ date: dateStr, count: dataMap[dateStr] || 0, future: dateStr > todayStr });
         }
-        currentWeek.push(d);
-      });
-      if (currentWeek.length > 0) weeks.push(currentWeek);
-
-      const today = new Date().toISOString().slice(0, 10);
-
-      weeksContainer.innerHTML = weeks.map(week => {
-        const days = week.map(d => {
-          // Hide future dates (use transparent placeholder to maintain grid)
-          if (d.date > today) return '<div class="heatmap-day empty"></div>';
-
-          let level = '';
-          if (d.count > 0) level = 'l1';
-          if (d.count >= 10) level = 'l2';
-          if (d.count >= 30) level = 'l3';
-          if (d.count >= 50) level = 'l4';
-
-          // Format: "M/D/Y N reviews"
-          const dateObj = new Date(d.date + 'T00:00:00');
-          const m = dateObj.getMonth() + 1;
-          const day = dateObj.getDate();
-          const year = dateObj.getFullYear();
-          const tip = d.count === 0
-            ? `${m}/${day}/${year} No reviews`
-            : `${m}/${day}/${year} ${d.count} reviews`;
-
-          return `<div class="heatmap-day ${level}" data-tip="${tip}"></div>`;
-        }).join('');
-        return `<div class="heatmap-week">${days}</div>`;
-      }).join('');
-
-      const shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      let lastMonth = -1;
-      let monthLabels = [];
-      weeks.forEach((week, i) => {
-        const month = parseInt(week[0].date.slice(5, 7)) - 1;
-        if (month !== lastMonth) {
-          monthLabels.push({ month: shortMonths[month], pos: i });
-          lastMonth = month;
-        }
-      });
-
-      const totalWeeks = weeks.length;
-      monthsContainer.innerHTML = monthLabels.map((m, i) => {
-        const nextPos = monthLabels[i + 1]?.pos || totalWeeks;
-        const numWeeks = nextPos - m.pos;
-        const isLast = i === monthLabels.length - 1;
-        // 11px cell + 4px gap, but last month has no trailing gap
-        const width = numWeeks * 15 - (isLast ? 4 : 0);
-        return `<span style="width:${width}px">${m.month}</span>`;
-      }).join('');
-    }
-
-    function renderReviewsChart(dailyReviews, last7Days) {
-      const ctx = document.getElementById('reviewsChart').getContext('2d');
-      const colors = getChartColors();
-      const labels = last7Days.map(d => d.slice(5).replace('-', '/'));
-      const values = last7Days.map(d => dailyReviews[d] || 0);
-
-      reviewsChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Reviews',
-            data: values,
-            backgroundColor: colors.bar,
-            borderRadius: 3,
-            barThickness: 30,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { backgroundColor: '#24292f', titleColor: '#fff', bodyColor: '#fff', padding: 8, cornerRadius: 6, displayColors: false, callbacks: { label: ctx => ctx.raw + ' reviews' } }
-          },
-          scales: {
-            x: { grid: { display: false }, border: { display: false }, ticks: { color: colors.textSecondary, font: { size: 12, family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" } } },
-            y: { beginAtZero: true, grid: { color: colors.grid }, border: { display: false }, ticks: { color: colors.textSecondary, font: { size: 12, family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" }, stepSize: 5 } }
-          }
-        }
-      });
-    }
-
-    function renderTimeChart(dailyTime, last7Days) {
-      const ctx = document.getElementById('timeChart').getContext('2d');
-      const colors = getChartColors();
-      const labels = last7Days.map(d => d.slice(5).replace('-', '/'));
-      const values = last7Days.map(d => dailyTime[d] || 0);
-
-      timeChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Time (min)',
-            data: values,
-            borderColor: colors.line,
-            borderWidth: 2,
-            pointBackgroundColor: isDark ? '#0d1117' : '#ffffff',
-            pointBorderColor: colors.line,
-            pointBorderWidth: 2,
-            pointRadius: 4,
-            tension: 0,
-            fill: false,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { backgroundColor: '#24292f', titleColor: '#fff', bodyColor: '#fff', padding: 8, cornerRadius: 6, displayColors: false, callbacks: { label: ctx => ctx.raw + ' min' } }
-          },
-          scales: {
-            x: { grid: { display: false }, border: { display: false }, ticks: { color: colors.textSecondary, font: { size: 12, family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" } } },
-            y: { beginAtZero: true, grid: { color: colors.grid }, border: { display: false }, ticks: { color: colors.textSecondary, font: { size: 12, family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" } } }
-          }
-        }
-      });
-    }
-
-    function renderMonthlyRank(monthlyData) {
-      const container = document.getElementById('monthly-rank');
-      const items = monthlyData.filter(item => item.reviews > 0).sort((a, b) => b.reviews - a.reviews).slice(0, 10);
-
-      if (items.length === 0) {
-        container.innerHTML = '<div style="color:var(--text-secondary)">No reviews this month</div>';
-        return;
+        weeks.push(week);
       }
-
-      const max = items[0].reviews;
-      container.innerHTML = items.map(item => {
-        const width = (item.reviews / max) * 100;
-        const displayName = item.name.includes('::') ? item.name.split('::').pop() : item.name;
-        return `
-          <div class="rank-item">
-            <div class="rank-name" title="${item.name}">${displayName}</div>
-            <div class="rank-bar-wrap" data-tip="${item.name}: ${item.reviews} reviews">
-              <div class="rank-bar-bg"><div class="rank-bar-fill" style="width:${width}%"></div></div>
-            </div>
-            <div class="rank-count">${item.reviews}</div>
-          </div>
-        `;
+      g.innerHTML = weeks.map(w => `<div class="heatmap-week">${w.map(d => {
+        if (d.future) return '<div class="heatmap-cell future"></div>';
+        let l = '';
+        if (d.count > 0) l = 'l1';
+        if (d.count >= 10) l = 'l2';
+        if (d.count >= 30) l = 'l3';
+        if (d.count >= 50) l = 'l4';
+        return `<div class="heatmap-cell ${l}" data-tip="${d.date}: ${d.count || 'No'} reviews"></div>`;
+      }).join('')}</div>`).join('');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      let lm = -1, ml = [];
+      weeks.forEach((w,i) => { const mo = parseInt(w[0].date.slice(5,7)) - 1; if (mo !== lm) { ml.push({m:months[mo],p:i}); lm = mo; }});
+      m.innerHTML = ml.map((x,i) => `<span style="flex:${(ml[i+1]?.p||52)-x.p}">${x.m}</span>`).join('');
+    }
+    function renderTopDeck(data) {
+      const c = document.getElementById('top-deck-list'), top6 = data.sort((a,b)=>b.reviews-a.reviews).slice(0,6);
+      if(!top6.length){c.innerHTML='<div style="color:var(--text-muted)">No data</div>';return;}
+      c.innerHTML = top6.map((d,i)=>`<div class="top-deck-item" data-tip="${d.reviews} reviews this week"><div class="rank">${i+1}</div><div class="deck-name">${d.name.includes('::')?d.name.split('::').pop():d.name}</div></div>`).join('');
+    }
+    function renderDecks(decks) {
+      const c = document.getElementById('deck-list'), items = Object.values(decks).filter(d=>{
+        const ma=d.mature||0,nw=d.new||0,le=d.total-ma-nw;
+        return d.total>0 && (ma>0 || le>0);
+      }).map(d=>{
+        const ma=d.mature||0,nw=d.new||0,le=d.total-ma-nw;
+        return {...d, ma, le, nw, learned: ma+le};
+      }).sort((a,b)=>b.learned-a.learned);
+      c.innerHTML = items.map(d=>{
+        const name=d.name.includes('::')?d.name.split('::').pop():d.name;
+        return`<div class="deck-item" data-tip="Mastered: ${d.ma}  Learning: ${d.le}  New: ${d.nw}"><div class="name" title="${d.name}">${name}</div><div class="stats">${d.learned}</div></div>`;
       }).join('');
     }
-
-    function renderDeckProgress(decks) {
-      const container = document.getElementById('deck-list');
-      const items = Object.values(decks).filter(d => d.total > 0).sort((a, b) => b.total - a.total);
-
-      container.innerHTML = items.map(deck => {
-        const total = deck.total;
-        const mature = deck.mature || 0;
-        const newCards = deck.new || 0;
-        const learning = total - mature - newCards;
-        const maturePct = (mature / total) * 100;
-        const learningPct = (learning / total) * 100;
-        const newPct = (newCards / total) * 100;
-        const tooltip = `Mastered: ${mature} | Learning: ${learning} | New: ${newCards}`;
-        return `
-          <div class="deck-item">
-            <div class="deck-name" title="${deck.name}">${deck.name}</div>
-            <div class="deck-bar-wrap" data-tip="${tooltip}">
-              <div class="deck-bar">
-                ${maturePct > 0 ? `<div class="deck-seg mature" style="width:${maturePct}%"></div>` : ''}
-                ${learningPct > 0 ? `<div class="deck-seg learning" style="width:${learningPct}%"></div>` : ''}
-                ${newPct > 0 ? `<div class="deck-seg new" style="width:${newPct}%"></div>` : ''}
-              </div>
-            </div>
-            <div class="deck-count">${total}</div>
-          </div>
-        `;
-      }).join('');
-    }
-
     async function init() {
-      setTheme(getPreferredTheme());
       try {
-        const response = await fetch('stats.json');
-        const stats = await response.json();
-
-        renderBadges(stats);
-        renderHeatmap(stats.heatmap_data);
-
-        const last7Days = stats.heatmap_data.slice(-7).map(d => d.date);
-        renderReviewsChart(stats.daily_reviews, last7Days);
-        renderTimeChart(stats.daily_time, last7Days);
-
-        renderMonthlyRank(stats.monthly_deck_reviews);
-        renderDeckProgress(stats.decks);
-      } catch (e) {
-        console.error('Failed to load stats:', e);
-        document.body.innerHTML += `<div style="color:red;padding:20px">Error: ${e.message}</div>`;
-      }
+        const r = await fetch('stats.json'), s = await r.json();
+        renderBadges(s);
+        const ls = getDaysAgo(s.last_study_date);
+        document.getElementById('last-study-date').textContent = ls.formatted;
+        document.getElementById('days-ago').textContent = ls.days;
+        document.getElementById('streak-value').textContent = s.streak + 'd';
+        renderWeekly(s.daily_deck_counts||{});
+        renderHeatmap(s.heatmap_data);
+        renderTopDeck(s.deck_reviews||[]);
+        renderDecks(s.decks);
+      } catch(e) { console.error(e); }
     }
-
     init();
   </script>
 </body>
