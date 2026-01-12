@@ -1,9 +1,9 @@
 {
   "cards": {
     "total": 2493,
-    "new": 2373,
+    "new": 2371,
     "learning": 30,
-    "mature": 90,
+    "mature": 92,
     "suspended": 0
   },
   "decks": {
@@ -143,8 +143,8 @@
       "name": "LeetCode",
       "id": "1766645040578",
       "total": 1140,
-      "new": 1095,
-      "mature": 45
+      "new": 1093,
+      "mature": 47
     },
     "1767601455653": {
       "name": "English",
@@ -158,18 +158,22 @@
       "id": "1767613746986"
     },
     "1767799238485": {
-      "name": "Test",
+      "name": "TestDeck::BasicTest",
       "id": "1767799238485",
       "total": 4,
       "new": 0,
       "mature": 0
     },
     "1768123222032": {
-      "name": "ClozeTest",
+      "name": "TestDeck::ClozeTest",
       "id": "1768123222032",
       "total": 10,
       "new": 0,
       "mature": 10
+    },
+    "1768189000243": {
+      "name": "TestDeck",
+      "id": "1768189000243"
     }
   },
   "daily_reviews": {
@@ -193,7 +197,8 @@
     "2026-01-07": 41,
     "2026-01-08": 28,
     "2026-01-09": 15,
-    "2026-01-11": 43
+    "2026-01-11": 43,
+    "2026-01-12": 6
   },
   "daily_time": {
     "2025-03-16": 0,
@@ -216,7 +221,8 @@
     "2026-01-07": 29,
     "2026-01-08": 24,
     "2026-01-09": 3,
-    "2026-01-11": 4
+    "2026-01-11": 4,
+    "2026-01-12": 2
   },
   "daily_deck_counts": {
     "2025-10-16": 1,
@@ -234,17 +240,18 @@
     "2026-01-07": 2,
     "2026-01-08": 2,
     "2026-01-09": 2,
-    "2026-01-11": 2
+    "2026-01-11": 2,
+    "2026-01-12": 1
   },
   "deck_reviews": [
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 107
+      "reviews": 113
     },
     {
       "id": "1767799238485",
-      "name": "Test",
+      "name": "TestDeck::BasicTest",
       "reviews": 27
     },
     {
@@ -254,7 +261,7 @@
     },
     {
       "id": "1768123222032",
-      "name": "ClozeTest",
+      "name": "TestDeck::ClozeTest",
       "reviews": 10
     },
     {
@@ -342,11 +349,11 @@
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 124
+      "reviews": 130
     },
     {
       "id": "1767799238485",
-      "name": "Test",
+      "name": "TestDeck::BasicTest",
       "reviews": 27
     },
     {
@@ -356,7 +363,7 @@
     },
     {
       "id": "1768123222032",
-      "name": "ClozeTest",
+      "name": "TestDeck::ClozeTest",
       "reviews": 10
     },
     {
@@ -440,10 +447,10 @@
       "reviews": 0
     }
   ],
-  "streak": 1,
-  "weekly_reviews": 167,
-  "weekly_time_minutes": 85,
-  "last_study_date": "2026-01-11",
+  "streak": 2,
+  "weekly_reviews": 173,
+  "weekly_time_minutes": 87,
+  "last_study_date": "2026-01-12",
   "heatmap_data": [
     {
       "date": "2025-01-19",
@@ -2595,10 +2602,10 @@
     },
     {
       "date": "2026-01-12",
-      "count": 0,
+      "count": 6,
       "weekday": 1,
       "week": 51
     }
   ],
-  "generated_at": "2026-01-12T00:43:28.240235"
+  "generated_at": "2026-01-12T20:48:04.272043"
 }
