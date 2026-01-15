@@ -248,11 +248,6 @@
   },
   "deck_reviews": [
     {
-      "id": "1766645040578",
-      "name": "LeetCode",
-      "reviews": 74
-    },
-    {
       "id": "1767799238485",
       "name": "TestDeck::BasicTest",
       "reviews": 27
@@ -268,14 +263,14 @@
       "reviews": 10
     },
     {
+      "id": "1766645040578",
+      "name": "LeetCode",
+      "reviews": 7
+    },
+    {
       "id": "1753177443885",
       "name": "Middleware::Kafka",
       "reviews": 5
-    },
-    {
-      "id": "1767601455653",
-      "name": "English",
-      "reviews": 1
     },
     {
       "id": "1760599190570",
@@ -345,6 +340,11 @@
     {
       "id": "1752591461759",
       "name": "Java::JavaThreadCode",
+      "reviews": 0
+    },
+    {
+      "id": "1767601455653",
+      "name": "English",
       "reviews": 0
     }
   ],
@@ -450,9 +450,9 @@
       "reviews": 0
     }
   ],
-  "streak": 3,
-  "weekly_reviews": 134,
-  "weekly_time_minutes": 64,
+  "streak": 0,
+  "weekly_reviews": 65,
+  "weekly_time_minutes": 11,
   "last_study_date": "2026-01-13",
   "heatmap_data": [
     {
@@ -2614,7 +2614,19 @@
       "count": 1,
       "weekday": 2,
       "week": 51
+    },
+    {
+      "date": "2026-01-14",
+      "count": 0,
+      "weekday": 3,
+      "week": 51
+    },
+    {
+      "date": "2026-01-15",
+      "count": 0,
+      "weekday": 4,
+      "week": 51
     }
   ],
-  "generated_at": "2026-01-13T23:59:31.777414"
+  "generated_at": "2026-01-15T22:00:00.123864"
 }
