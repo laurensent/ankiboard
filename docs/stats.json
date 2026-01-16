@@ -253,11 +253,6 @@
       "reviews": 27
     },
     {
-      "id": "1763966727334",
-      "name": "QA",
-      "reviews": 11
-    },
-    {
       "id": "1768123222032",
       "name": "TestDeck::ClozeTest",
       "reviews": 10
@@ -268,9 +263,9 @@
       "reviews": 7
     },
     {
-      "id": "1753177443885",
-      "name": "Middleware::Kafka",
-      "reviews": 5
+      "id": "1763966727334",
+      "name": "QA",
+      "reviews": 0
     },
     {
       "id": "1760599190570",
@@ -315,6 +310,11 @@
     {
       "id": "1752582991326",
       "name": "Java::JavaBasic",
+      "reviews": 0
+    },
+    {
+      "id": "1753177443885",
+      "name": "Middleware::Kafka",
       "reviews": 0
     },
     {
@@ -451,8 +451,8 @@
     }
   ],
   "streak": 0,
-  "weekly_reviews": 65,
-  "weekly_time_minutes": 11,
+  "weekly_reviews": 50,
+  "weekly_time_minutes": 7,
   "last_study_date": "2026-01-13",
   "heatmap_data": [
     {
@@ -2626,7 +2626,13 @@
       "count": 0,
       "weekday": 4,
       "week": 51
+    },
+    {
+      "date": "2026-01-16",
+      "count": 0,
+      "weekday": 5,
+      "week": 51
     }
   ],
-  "generated_at": "2026-01-15T22:00:00.123864"
+  "generated_at": "2026-01-16T22:00:00.089589"
 }
