@@ -250,7 +250,7 @@
     {
       "id": "1766645040578",
       "name": "LeetCode",
-      "reviews": 7
+      "reviews": 1
     },
     {
       "id": "1763966727334",
@@ -451,8 +451,8 @@
     }
   ],
   "streak": 0,
-  "weekly_reviews": 7,
-  "weekly_time_minutes": 2,
+  "weekly_reviews": 1,
+  "weekly_time_minutes": 0,
   "last_study_date": "2026-01-13",
   "heatmap_data": [
     {
@@ -2602,7 +2602,13 @@
       "count": 0,
       "weekday": 0,
       "week": 51
+    },
+    {
+      "date": "2026-01-19",
+      "count": 0,
+      "weekday": 1,
+      "week": 51
     }
   ],
-  "generated_at": "2026-01-18T22:00:00.119538"
+  "generated_at": "2026-01-19T22:00:00.109895"
 }
