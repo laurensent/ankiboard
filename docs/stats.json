@@ -451,7 +451,7 @@
     }
   ],
   "streak": 0,
-  "weekly_reviews": 1,
+  "weekly_reviews": 0,
   "weekly_time_minutes": 0,
   "last_study_date": "2026-01-13",
   "heatmap_data": [
@@ -2608,7 +2608,13 @@
       "count": 0,
       "weekday": 1,
       "week": 51
+    },
+    {
+      "date": "2026-01-20",
+      "count": 0,
+      "weekday": 2,
+      "week": 51
     }
   ],
-  "generated_at": "2026-01-19T22:00:00.109895"
+  "generated_at": "2026-01-20T22:00:00.110312"
 }
